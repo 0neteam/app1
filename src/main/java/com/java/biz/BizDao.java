@@ -1,4 +1,4 @@
 package com.java.biz;
 
-public class BizDao {
+public interface BizDao {
 }
