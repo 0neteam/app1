@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<style>
+
+    /*row 내에 있는 div에게 보더를 추가.*/
+    .row>div {
+        border: 1px solid black;
+    }
+
+    /*https://velog.io/@anna/css-sticky-sticky-sidebar-example*/
+    /* // 좌측 본문 */
+    .article {
+        display: inline-block;
+    }
+
+    /* // 좌측 사이드바 */
+    .side {
+        float: left;
+        position: sticky;
+        top: 50px;
+        margin: 10px;
+    }
+</style>
+<main layout:fragment="content" class="container my-2">
+    <div class="side">
+        <button type="button" class="btn btn-light">수주관리</button><br>
+        <button type="button" class="btn btn-primary">수주조회</button><br>
+        <button type="button" class="btn btn-light">외주관리</button><br>
+        <button type="button" class="btn btn-light">운송</button><br>
+        <button type="button" class="btn btn-light">상품관리</button><br>
+        <button type="button" class="btn btn-light">재고현황</button><br>
+        <button type="button" class="btn btn-danger"  data-bs-toggle="modal"
+                data-bs-target="#modalOrder">발주서 상세조회모달 테스트버튼</button>
+    </div>
+    <form action="">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-sm-2">no</div>
+                <div class="col-sm-2">서류코드</div>
+                <div class="col-sm-2">발주업체</div>
+                <div class="col-sm-2">작성일자</div>
+                <div class="col-sm-2">납기요청일</div>
+                <div class="col-sm-2">승인상태</div>
+            </div>
+        </div>
+    </form>
+
+    <!--(MODAL)발주서 상세조회창-->
+    <div class="modal" id="modalOrder">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+                <div class="modal-body">
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col-sm-2">서류코드</div>
+                            <div class="col-sm-4">a20250123001</div>
+                            <div class="col-sm-2">작성일자</div>
+                            <div class="col-sm-4">2024.01.23</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-1">품번</div>
+                            <div class="col-sm-2">품목코드</div>
+                            <div class="col-sm-2">품목명</div>
+                            <div class="col-sm-1">발주수량</div>
+                            <div class="col-sm-2">단가</div>
+                            <div class="col-sm-2">합계</div>
+                            <div class="col-sm-2">비고</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-1">납기</div>
+                            <div class="col-sm-5"></div>
+                            <div class="col-sm-2">총액</div>
+                            <div class="col-sm-2">0</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">운송업체 요청</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</html>
+
+

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<style>
+
+    /*row 내에 있는 div에게 보더를 추가.*/
+    .row>div {
+        border: 1px solid black;
+    }
+
+    /*https://velog.io/@anna/css-sticky-sticky-sidebar-example*/
+    /* // 좌측 본문 */
+    .article {
+        display: inline-block;
+    }
+
+    /* // 좌측 사이드바 */
+    .side {
+        float: left;
+        position: sticky;
+        top: 50px;
+        margin: 10px;
+    }
+</style>
+<main layout:fragment="content" class="container my-2">
+    <div class="side">
+        <button type="button" class="btn btn-light">발주 관리</button><br>
+        <button type="button" class="btn btn-light">발주 요청</button><br>
+        <button type="button" class="btn btn-primary">발주 조회</button><br>
+        <!--(MODAL)발주 조회 테스트버튼-->
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                data-bs-target="#modalViewEstimate">모달테스트버튼1</button><br>
+        <!--(MODAL)발주 조회 테스트버튼-->
+        <!--(MODAL)최종 물품 수령 정보-->
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                data-bs-target="#modalFinalItemReceiptInformation">모달테스트버튼2</button>
+        <!--(MODAL)최종 물품 수령 정보-->
+    </div>
+    </div>
+    <form action="">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-sm-4">
+                    <select class="form-select">
+                        <option selected>거래처 선택</option>
+                        <option value="1">거래처1</option>
+                        <option value="2">거래처2</option>
+                        <option value="3">거래처3</option>
+                    </select>
+                </div>
+                <div class="col-sm-8">
+                    <div class="input-group" mb-3>
+                        <input type="text" class="form-control">
+                        <button class="btn btn-success" type="submit">검색</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">발주서번호</div>
+                <div class="col-sm-4">진행상태</div>
+                <div class="col-sm-2">발주요청일</div>
+                <div class="col-sm-2"></div>
+            </div>
+        </div>
+    </form>
+    <!--(MODAL)발주 조회 - 견적서 상세화면-->
+    <div class="modal" id="modalViewEstimate">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1>"발주 조회 - 견적서 상세화면"</h1>
+                </div>
+                <div class="modal-body">
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <button type="button" class="btn btn-primary">발주 확정</button>
+                                <button type="button" class="btn btn-danger">발주 취소</button>
+                            </div>
+                            <div class="col-sm-4"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">품번</div>
+                            <div class="col-sm-2">품목코드</div>
+                            <div class="col-sm-2">품목명</div>
+                            <div class="col-sm-2">수량</div>
+                            <div class="col-sm-2">상태값</div>
+                            <div class="col-sm-2">비고</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--(MODAL)발주 조회 - 견적서 상세화면-->
+    <!-- (MODAL) 최종 물품 수령 정보 -->
+    <div class="modal" id="modalFinalItemReceiptInformation">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">최종 수령 물품 정보</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col-sm-2">품번</div>
+                            <div class="col-sm-1">품목코드</div>
+                            <div class="col-sm-2">품목명</div>
+                            <div class="col-sm-2">배송예정수량</div>
+                            <div class="col-sm-2">실제입고수량</div>
+                            <div class="col-sm-2">상태값</div>
+                            <div class="col-sm-1">비고</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">최종 수령 확정</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</html>
