@@ -14,5 +14,6 @@ public class bizController {
     @GetMapping("/comp/create")
     public String create(HttpServletRequest req){
         return bizService.create(req);
+        
     }
 }
