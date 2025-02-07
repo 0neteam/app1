@@ -11,8 +11,13 @@ import lombok.RequiredArgsConstructor;
 public class StockController {
 	
 	@GetMapping("/stock")
-	public String list() {
+	public String stocklist() {
 		return "stock/stock";
+	}
+	
+	@GetMapping("/income")
+	public String incomelist() {
+		return "stock/income";
 	}
 
 }

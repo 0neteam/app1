@@ -1,5 +1,8 @@
 package com.java.stock;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,13 +16,18 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class StockDTO {
 
-	private int no;
-	private int itemCode;
-	private int bizNo;
-	private String name;
-	private int qty;
-	private int price;
+public class IncomeDTO {
 	
+	private int no;
+	private int orderItemNo;
+	private String incomeId;
+	private int qty;
+	private Date reqDate;
+	private Timestamp incomeDate;
+	private String status;
+	private String useYN;
+	
+	private int orderQty;
+
 }

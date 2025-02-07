@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+
+<head>
+    <link rel="stylesheet" th:href="@{/stock/stock.css}">
+    <script src="${pageContext.request.contextPath}/stock/income.js"></script>
+    <!-- Add Bootstrap Modal Script -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<main layout:fragment="content" class="container my-2">
+
+    <div class="container-fluid">
+        <!-- 입고 섹션 -->
+        <div class="container section-container p-4 border rounded shadow-sm">
+            <div class="text-center">
+                <h3>입고</h3>
+                <form th:action="@{/searchIncome}" method="get">
+                    <div class="row align-items-center mb-3">
+                        <div class="col-sm-2">
+                            <select class="form-select">
+                                <option selected>전체</option>
+                                <option value="1">발주코드</option>
+                                <option value="2">품목코드</option>
+                                <option value="3">품목명</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control">
+                                <button class="btn btn-success" type="submit">검색</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-3 text-end">
+                            <button type="button" class="btn btn-primary">수정</button>
+                            <button type="button" class="btn btn-danger">삭제</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="table-responsive">
+			    <table class="table table-bordered text-center" style="min-width: 768px;">
+			        <thead class="table-light">
+			            <tr>
+			                <th>발주코드</th>
+			                <th>품목코드</th>
+			                <th>품목명</th>
+			                <th>발주수량</th>
+			                <th>입고수량</th>
+			                <th>발주일자</th>
+			                <th>입고일자</th>
+			                <th>거래처</th>
+			                <th>상태</th>
+			            </tr>
+			        </thead>
+			        <tbody id="data-container">
+			            <tr>
+			                <td>12345</td>
+			                <td>56789</td>
+			                <td>Example Item</td>
+			                <td>100</td>
+			                <td>50</td>
+			                <td>2025-02-01</td>
+			                <td>2025-02-05</td>
+			                <td><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#supplierModal">거래처</button></td>
+			                <td>완료</td>
+			            </tr>
+			            <!-- Repeat similar rows here -->
+			        </tbody>
+			    </table>
+			</div>
+        </div>
+    </div>
+
+    <!-- 거래처 Modal -->
+    <div class="modal fade" id="supplierModal" tabindex="-1" aria-labelledby="supplierModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="supplierModalLabel">거래처 정보</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- You can dynamically add the supplier name here -->
+                    <p>여기서 거래처 이름을 확인할 수 있습니다.</p>
+                    <!-- Example: -->
+                    <p><strong>거래처 이름:</strong> ABC Company</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+</html>
