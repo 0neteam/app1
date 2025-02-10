@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
 @Controller
-public class BizMgmt {
+public class BizController {
 
     private final BizService bizService;
 

@@ -38,6 +38,15 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
 
+# 보안 설정
+  security:
+    csrf:
+      enabled: true   # CSRF 보호 활성화
+    user:
+      name: user  # 기본 사용자 이름
+      password: password  # 기본 비밀번호 설정
+
+
 # log level 설정
 logging:
   level:
