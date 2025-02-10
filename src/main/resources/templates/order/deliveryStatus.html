@@ -25,18 +25,72 @@
   }
 </style>
 <main layout:fragment="content" class="container my-2">
-  <div class="side" >
-    <button type="button" class="btn btn-light">수주관리</button><br>
-    <button type="button" class="btn btn-light">수주조회</button><br>
-    <button type="button" class="btn btn-light">외주관리</button><br>
-    <button type="button" class="btn btn-primary">운송</button><br>
-    <button type="button" class="btn btn-light">상품관리</button><br>
-    <button type="button" class="btn btn-light">재고현황</button><br>
+  <div class="container my-4">
+    <!-- 테이블 헤더 -->
+    <div class="row border d-flex flex-nowrap" style="background-color: #f8f9fa;">
+      <div class="col border p-3 text-center">
+        <div>운송번호</div>
+      </div>
+      <div class="col border p-3 text-center">
+        <div>운송업체</div>
+      </div>
+      <div class="col border p-3 text-center">
+        <div>출발지</div>
+      </div>
+      <div class="col border p-3 text-center">
+        <div>도착지</div>
+      </div>
+      <div class="col border p-3 text-center">
+        <div>예정시간</div>
+      </div>
+      <div class="col border p-3 text-center">
+        <div>상태</div>
+      </div>
+    </div>
+    <!-- 운송 정보 예시 데이터 1 -->
+    <div class="row d-flex flex-nowrap">
+      <div class="col border p-3 text-center">
+        <div>2025-T001</div>
+      </div>
+      <div class="col border p-3 text-center">
+        <div>한진택배</div>
+      </div>
+      <div class="col border p-3 text-center">
+        <div>서울</div>
+      </div>
+      <div class="col border p-3 text-center">
+        <div>부산</div>
+      </div>
+      <div class="col border p-3 text-center">
+        <div>2025-02-10 14:00</div>
+      </div>
+      <div class="col border p-3 text-center">
+        <div>배송중</div>
+      </div>
+    </div>
+    <!-- 운송 정보 예시 데이터 2 -->
+    <div class="row d-flex flex-nowrap">
+      <div class="col border p-3 text-center">
+        <div>2025-T002</div>
+      </div>
+      <div class="col border p-3 text-center">
+        <div>CJ대한통운</div>
+      </div>
+      <div class="col border p-3 text-center">
+        <div>서울</div>
+      </div>
+      <div class="col border p-3 text-center">
+        <div>대구</div>
+      </div>
+      <div class="col border p-3 text-center">
+        <div>2025-02-11 09:00</div>
+      </div>
+      <div class="col border p-3 text-center">
+        <div>배송완료</div>
+      </div>
+    </div>
   </div>
-123
-  <div>
-    <button type="button" class="btn btn-light">운송 현황</button>
-  </div>
+
 </main>
 </html>
 

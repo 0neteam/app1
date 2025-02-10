@@ -1,105 +1,149 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>인사관리 시스템</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">      
+
+    <head>   
+    
+	    <th:block layout:fragment="css">
+	    	<link rel="stylesheet" href="/css/layouts/default.css"> <!-- default 적용 문제로 재추가 -->
+	        <link rel="stylesheet" href="/css/user/create.css">
+	        <link rel="stylesheet" href="/css/user/list.css">
+	    </th:block>
+	    <th:block layout:fragment="script">	        
+	        <script src="/js/layouts/default.js"></script>		
+	        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	        <script src="/js/user/create.js"></script>
+	        <script src="/js/user/list.js"></script>
+	    </th:block>
+	     	
+	</head>
+	
+	<
+	
+<main layout:fragment="content" class="container my-2">
     <div class="container mt-5">
-        <h2 class="mb-4">인사관리 시스템</h2>
+        <h2 class="mb-4">사원정보</h2>
         <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">직원 추가</button>
         
         <table class="table table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th>번호</th>
-                    <th>사번</th>
-                    <th>사원명</th>
-                    <th>부서명</th>
-                    <th>직급</th>
-                    <th>관리</th>
-                </tr>
+				    <th style="width: 5%; min-width: 50px;">번호</th>
+				    <th style="width: 10%;">사번</th>
+				    <th style="width: 15%;">사원명</th>
+				    <th style="width: 15%;">부서명</th>
+				    <th style="width: 7%;">관리</th>
+				</tr>
+
             </thead>
-            <tbody id="employeeTableBody">
-                <tr>
-                    <td>1</td>
-                    <td>2023001</td>
-                    <td>김철수</td>
-                    <td>개발팀</td>
-                    <td>과장</td>
-                    <td><button class="btn btn-danger btn-sm" onclick="deleteEmployee(this)">삭제</button></td>
-                </tr>
+            <tbody>
+                <!-- 'users'는 Controller에서 전달된 데이터입니다. -->
+                <tr th:each="r, iterStat : ${rs}">
+                    <td th:text="${iterStat.index + 1}" ></td> <!-- 인덱스를 1부터 시작하도록 설정 -->
+                    <td th:text="${r.userNo}" ></td>
+                    <td th:text="${r.name}" ></td>
+                    <td th:text="${r.deptName}" ></td>
+                    <td >
+                        <!-- userNo 값을 문자열로 처리하여 deleteEmployee에 넘김 -->
+				        <button class="del-btn btn btn-danger btn-sm" 
+				        th:data-user-no="${r.userNo}" onclick="deleteEmployee(this)">삭제</button>
+                    </td>
+                </tr>                
             </tbody>
         </table>
     </div>
 
     <!-- 직원 추가 모달 -->
     <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- modal-lg로 모달 크기를 설정 -->
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addEmployeeModalLabel">직원 추가</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="employeeForm">
-                        <div class="mb-3">
-                            <label class="form-label">사번</label>
-                            <input type="text" class="form-control" id="empId" required>
+                    <form th:action="@{/signUp}" method="post" id="signupForm2">
+                        <div class="row mb-3 form-group">
+                            <label for="email_id" class="col-sm-2 col-form-label">회원 이메일</label>
+                            
+                            	<input type="hidden" id="email" name="email" class="form-control" >
+                    			<input type="hidden" id="email_duple_chk">
+                    			
+                            <div class="col-sm-10">
+                                <div class="d-flex align-items-center">
+                                    <input type="text" id="email_id" class="form-control" oninput="allowOnlyLetters(event)" style="width: 40%;" placeholder="이메일아이디" required>
+                                    &nbsp;
+                                    <span>@</span>
+                                    &nbsp;
+                                    <input type="text" id="email_domain" class="form-control" oninput="allowOnlyLetters(event)" value="naver.com"  placeholder="이메일도메인" style="width: 35%;" required readonly>
+                                    &nbsp;
+                                    <select class="form-select" id="emailDomain" onchange="select_email_domain()" style="width: 25%; height: calc(2.25rem + 2px);">
+                                        <option value="naver">네이버</option>
+                                        <option value="gmail">G메일</option>
+                                        <option value="daum">다음</option>
+                                        <option value="custom">직접 입력</option>
+                                    </select>
+                                    &nbsp;
+                                    <button type="button" id="check_email_btn" class="duchk-btn btn btn-primary" style="min-width: 110px;" onclick="checkDuplicateEmail()">중복 확인</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">사원명</label>
-                            <input type="text" class="form-control" id="name" required>
+                        <div class="row mb-3 form-group">
+                            <label class="col-sm-2 col-form-label">회원 이름</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="name" id="username" class="form-control" placeholder="홍길동" required>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">부서명</label>
-                            <input type="text" class="form-control" id="department" required>
+                        <div class="row mb-3 form-group">
+                            <label class="col-sm-2 col-form-label">비밀번호</label>
+                            <div class="col-sm-10">
+                                <input type="password" name=pwd id="password" class="form-control" placeholder="비밀번호를 입력하세요" required>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">직급</label>
-                            <input type="text" class="form-control" id="position" required>
+                        <div class="row mb-3 form-group">
+                            <label class="col-sm-2 col-form-label">비밀번호 확인</label>
+                            <div class="col-sm-10">
+                                <input type="password" id="password_confirm" class="form-control" placeholder="비밀번호를 다시 입력하세요" required>
+                            </div>
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="addEmployee()">추가</button>
+                        <div class="row mb-3 form-group">
+                            <label class="col-sm-2 col-form-label">핸드폰번호</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="phone" id="phone" class="form-control" placeholder="010-0000-0000" required>
+                            </div>
+                        </div>                
+                        <div class="row mb-3 form-group">
+                            <label class="col-sm-2 col-form-label">우편번호</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="zipcode" id="zipcode" class="form-control" placeholder="자동 입력되는칸" required readonly>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="zipcode-btn btn btn-secondary" onclick="openPostcode()" style="min-width: 110px;">우편번호 검색</button>
+                            </div>
+                        </div>
+                        <div class="row mb-3 form-group">
+                            <label class="col-sm-2 col-form-label">주소</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="adr" id="address" class="form-control" placeholder="자동 입력되는칸" required readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-3 form-group">
+                            <label class="col-sm-2 col-form-label">상세주소</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="detail_adr" id="address_detail" class="form-control" placeholder="상세주소를 입력하세요" required>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">가입</button>
+                            <button type="button" class="btn btn-secondary" onclick="window.location.href='/user/list';">취소</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        let employeeCount = 1;
-        function addEmployee() {
-            const empId = document.getElementById('empId').value;
-            const name = document.getElementById('name').value;
-            const department = document.getElementById('department').value;
-            const position = document.getElementById('position').value;
-            
-            if (empId && name && department && position) {
-                employeeCount++;
-                const tableBody = document.getElementById('employeeTableBody');
-                const row = `<tr>
-                                <td>${employeeCount}</td>
-                                <td>${empId}</td>
-                                <td>${name}</td>
-                                <td>${department}</td>
-                                <td>${position}</td>
-                                <td><button class="btn btn-danger btn-sm" onclick="deleteEmployee(this)">삭제</button></td>
-                            </tr>`;
-                tableBody.innerHTML += row;
-                
-                document.getElementById('employeeForm').reset();
-                var modal = new bootstrap.Modal(document.getElementById('addEmployeeModal'));
-                modal.hide();
-            }
-        }
-
-        function deleteEmployee(button) {
-            button.closest('tr').remove();
-        }
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+</main>
 </html>
