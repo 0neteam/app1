@@ -49,8 +49,32 @@ public class UserServiceImp implements UserService, UserDetailsService {
 	}
 	
 	@Override
-	public String list(Model model, HttpServletRequest req) {		
-		model.addAttribute("rs", userDAO.findALL());
+	public String list(Model model, String searchOption, String searchKeyword) {	
+		
+		List<UserDTO> userDTO = null;		
+		
+		if (searchOption == null || searchKeyword == null || searchKeyword.isEmpty()) {
+			userDTO = userDAO.findALL();  // 전달 받은 값이 없으면 전체 목록 조회			
+        }
+
+        // 검색옵션에 따라 Mapper로 쿼리 실행
+        switch (searchOption) {
+            case "userNo":
+            	userDTO = userDAO.findByUserNo(searchKeyword);  // 사번으로 조회            	
+            	break;
+            case "name":
+            	userDTO = userDAO.findByName(searchKeyword);    // 사원명으로 조회            	
+            	break;
+            case "dept":
+            	userDTO = userDAO.findByDept(searchKeyword);    // 부서명으로 조회            	
+            	break;
+            default:
+            	userDTO = userDAO.findALL();  // 전부 해당 안될시 기본값 전체 조회
+            	
+        }
+               
+		model.addAttribute("rs", userDTO);
+		
 		return "user/list";
 	}
 	

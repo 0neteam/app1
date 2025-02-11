@@ -55,7 +55,7 @@ public class UserController {
 	// 개발중
 	@ResponseBody
 	@PostMapping("/user/delete")
-	public Map<String, String> userDel(@RequestBody Map<String, String> request) {
+	public Map<String, String> userDel(@RequestParam Map<String, String> request) {
 		
 		String userNo = request.get("userNo");
 		
@@ -80,15 +80,28 @@ public class UserController {
 	// 사용자 리스트 조회
 	@PreAuthorize("isAuthenticated()")  // 로그인한 사용자만 접근 가능하도록 설정
 	@GetMapping("/user/list")
-	public String list(Model model, HttpServletRequest req) {
-		return userService.list(model, req);
+	public String list(@RequestParam(value = "searchOption", required = false) String searchOption,
+            @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
+            Model model) {
+		
+		// searchOption이 null일 경우 기본값 설정 (예: "userNo")
+        if (searchOption == null) {
+            searchOption = "";  // 기본 검색 옵션 (예: 사번)
+        }
+
+        // searchKeyword가 null일 경우 빈 문자열로 설정
+        if (searchKeyword == null) {
+            searchKeyword = "";
+        }
+		
+		return userService.list(model, searchOption, searchKeyword);
 	}
 		
 	
 	// 이메일 중복 체크로직1
 	@ResponseBody
 	@PostMapping("/user/create/checkemail")	
-	public Map<String, String> checkEmailDuplicate(@RequestBody Map<String, String> request) {
+	public Map<String, String> checkEmailDuplicate(@RequestParam Map<String, String> request) {
 		
 	    String email = request.get("email");  // JSON 형식으로 전달된 이메일 값 추출
 	    

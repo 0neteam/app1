@@ -50,4 +50,22 @@ public class UserDaoImp implements UserDao {
 		return userMapper.delete(UserNo);
 	}
 
+	@Override
+	public List<UserDTO> findByUserNo(String userNo) {
+		// TODO Auto-generated method stub
+		return userMapper.findByUserNo(userNo);
+	}
+
+	@Override
+	public List<UserDTO> findByName(String name) {
+		// TODO Auto-generated method stub
+		return userMapper.findByName(name);
+	}
+
+	@Override
+	public List<UserDTO> findByDept(String deptName) {
+		// TODO Auto-generated method stub
+		return userMapper.findByDept(deptName);
+	}
+
 }

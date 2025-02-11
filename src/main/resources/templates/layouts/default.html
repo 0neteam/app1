@@ -11,32 +11,15 @@
 	<script th:src="@{/webjars/jquery/dist/jquery.min.js}" type="text/javascript"></script>
     <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 	<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}" type="text/javascript"></script>
+
 	
-	
-    <!-- CSRF 토큰을 meta 태그로 추가 -->
-    <meta name="csrf-token" content="${_csrf.token}"/>
-	
-	<!-- 각 페이지의 script가 작성될 위치 -->
-	<!--
+	<!-- 각 페이지의 script가 작성될 위치 -->	
 	<th:block layout:fragment="css"> 
-    </th:block>
-    -->
-      
-    <!--
+    </th:block>          
+    
     <th:block layout:fragment="script">
     </th:block>
-	-->
-	
-    <!-- 각 페이지의 script가 작성될 위치 -->
-    <th:block layout:fragment="css">
-        <link rel="stylesheet" href="/css/layouts/default.css">
-    </th:block>   
-
-
-	<!-- 텍스트 애니메이션을 위한 스크립트 -->
-    <th:block layout:fragment="script">
-        <script src="/js/layouts/default.js"></script>
-    </th:block>
+		   
     
 </head>
 <body>

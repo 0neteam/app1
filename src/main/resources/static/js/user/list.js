@@ -1,3 +1,22 @@
+function searchEmployee() {
+    var searchOption = document.getElementById("searchOption").value;
+    var searchKeyword = document.getElementById("searchKeyword").value;
+
+	// 검색어 항목이 선택된 상태이면
+	if (searchOption !== "" || searchKeyword !== "") {
+		if (!searchOption || !searchKeyword) {
+	        alert("검색 항목과 검색어를 모두 입력해 주세요.");
+	        return;
+	    }
+	}
+    
+
+    // 서버에 필터링된 데이터 요청 (AJAX 요청)
+    var url = "/user/list?searchOption=" + searchOption + "&searchKeyword=" + encodeURIComponent(searchKeyword);
+
+    // 페이지를 새로 고침하여 필터링된 데이터만 표시하도록 요청
+    window.location.href = url;  // URL을 갱신하여 서버에 필터링된 데이터를 요청
+}
 
 // 직원 삭제 함수
 function deleteEmployee(button) {
@@ -6,6 +25,9 @@ function deleteEmployee(button) {
 	
     // 삭제 전에 확인 메시지 표시
     const isConfirmed = window.confirm('정말로 이 직원을 삭제하시겠습니까?');
+	
+	const _csrf = document.querySelector('input[name="_csrf"]').value;
+		//console.log("_csrf: ", _csrf); // 이메일 값 확인
 
 	// 사용자가 확인을 누르면 삭제 진행
     if (isConfirmed) {
@@ -13,8 +35,11 @@ function deleteEmployee(button) {
 	    $.ajax({
 			url: '/user/delete',  // 이메일 중복 확인 API 엔드포인트
 			method: 'POST',
-			contentType: 'application/json', // json 방식으로 요청			
-			data: JSON.stringify({ userNo: userNo }), // json 방식으로 요청			
+			contentType: 'application/x-www-form-urlencoded',  // URL 인코딩 방식으로 전송
+		    data: { 
+		        userNo: userNo,  // 이메일 값
+		        _csrf: _csrf   // CSRF 토큰 값
+		    },							
 			success: function(res) {
 				if (res.status === "OK") {					
 					alert("삭제 완료");
@@ -34,6 +59,10 @@ function deleteEmployee(button) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+	
+	document.getElementById("searchOption").value = "";
+	document.getElementById("searchKeyword").value = "";
+	
     // 'submit' 이벤트 리스너가 한 번만 등록되도록 확인
     const signupForm2 = document.getElementById('signupForm2');
     
