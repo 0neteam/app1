@@ -8,4 +8,5 @@ public interface BizService {
     String list(Model model, HttpServletRequest req);
 
 	String detail(Model model, HttpServletRequest req);
+
 }

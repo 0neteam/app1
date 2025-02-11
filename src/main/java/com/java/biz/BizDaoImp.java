@@ -15,4 +15,14 @@ public class BizDaoImp implements BizDao {
     public List<BizDTO> findList() {
         return bizMapper.findList();
     }
+
+    @Override
+    public int create(BizDTO biz) {
+        return bizMapper.create(biz);
+    }
+
+    @Override
+    public BizDTO findOne(int no) {
+        return bizMapper.findOne(no);
+    }
 }

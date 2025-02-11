@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @RequiredArgsConstructor
 @Controller
@@ -26,10 +27,11 @@ public class BizController {
         return bizService.list(model, req);
     }
 
-    //등록 aka "(창고->제조사) 거래처 가입화면"
+    //등록 aka "(창고->제조사) 거래처 가입화면" 거래처 추가
     @GetMapping("biz/create")
-    public String create(){
-        return "biz/create";
+    public String create(@ModelAttribute BizDTO biz) {
+        //return bizService.create(biz); //임시
+        return null;
     }
     
     //상세

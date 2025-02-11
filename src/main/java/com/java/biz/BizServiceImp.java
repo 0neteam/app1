@@ -21,32 +21,16 @@ public class BizServiceImp implements BizService {
 
 	@Override
 	public String detail(Model model, HttpServletRequest req) {
-//
-//        try {
-//			//아래 코드들은 앞에서 가져올때 쓰는것들.
-////			String bizName = req.getParameter("bizName");
-////			String bizNum = req.getParameter("bizNum");
-////			String adr = req.getParameter("adr");
-////			String adrDetail = req.getParameter("adrDetail");
-////			String bizType = req.getParameter("bizType");
-////			String regDate = req.getParameter("regDate");
-////			//
-//// 			// 도움! stg_client 테이블말고 다른 테이블꺼 가져올수있는지?
-////			//
-////			BizDTO bizDTO = BizDTO.builder().bizName(bizName).bizNum(bizNum).adr(adr).adrDetail(adrDetail).
-////					bizType(bizType).regDate(regDate).;
-//
-//            model.addAttribute("rs", bizDTO);
-//            return "detail";
-//} catch (NumberFormatException e) {
-//            e.printStackTrace();
-//            return "redirect:/";
-//}
-		return null; //임시
+		try{
+			int no = Integer.parseInt(req.getParameter("bizNo"));
+			BizDTO biz1 = bizDao.findOne(no);
+			model.addAttribute("bizResult", biz1);
+			return "biz/detail";
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/";
 	}
-
-
-
 
 
 

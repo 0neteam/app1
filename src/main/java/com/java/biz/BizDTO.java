@@ -28,4 +28,7 @@ public class BizDTO {
     private String adrDetail;
     private char useYN;
     private String regDate;
+
+    private String url;
+    private String key;
 }
