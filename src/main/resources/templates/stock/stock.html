@@ -4,8 +4,8 @@
       layout:decorate="~{layouts/default}">
 
 <head>
-    <link rel="stylesheet" th:href="@{/stock/stock.css}">
-    <script src="${pageContext.request.contextPath}/stock/stock.js"></script>
+    <link rel="stylesheet" th:href="@{/css/stock/stock.css}">
+    <script src="@{/js/stock/income.js}"></script>
 </head>
 
 <main layout:fragment="content" class="container my-2">
@@ -15,11 +15,11 @@
         <!-- 재고 섹션 -->
         <div class="container section-container p-4 border rounded shadow-sm">
             <div class="text-center">
-                <h3>재고량</h3>
-                <form th:action="@{/searchStock}" method="get">
+                <h2>재고량</h2>
+                <form th:action="@{/stock}" method="get">
                     <div class="row align-items-center mb-3">
                         <div class="col-sm-2">
-                            <select class="form-select">
+                            <select class="form-select" name="category" id="category">
                                 <option selected>전체</option>
                                 <option value="1">품목코드</option>
                                 <option value="2">품목명</option>
@@ -27,7 +27,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" name="search" id="search" />
                                 <button class="btn btn-success" type="submit">검색</button>
                             </div>
                         </div>
@@ -49,11 +49,17 @@
 			            </tr>
 			        </thead>
 			        <tbody id="data-container">
-			            <tr>
-			                <td colspan="3">재고 데이터 없음</td>
-			            </tr>
-			        </tbody>
-			    </table>
+					    <tr th:if="${result == null or result.isEmpty()}">
+					        <td colspan="3">재고 데이터 없음</td>
+					    </tr>
+					    <tr th:each="stock : ${result}">
+					    	<td></td>
+					        <td th:text="${stock.itemCode}"></td>
+					        <td th:text="${stock.name}"></td>
+					        <td th:text="${stock.qty}"></td>
+					    </tr>
+					</tbody>
+                </table>
 			</div>
 
         </div>

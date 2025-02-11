@@ -4,11 +4,11 @@ import java.util.List;
 
 public interface StockDao {
 	
-	public List<IncomeDTO> findIncome(int no);
-	public List<StockDTO> findStock(int no);
-	public int editincome(StockDTO stockDTO);
-	public int editstock(StockDTO stockDTO);
-	public int deleteincome(int no);
-	public int deletestock(int no);
+	public List<IncomeDTO> searchIncome(Integer pcode, String icode, String pname);
+    public List<StockDTO> searchStock(StockDTO stockDTO);
+	public int editIncome(IncomeDTO incomeDTO);
+	public int editStock(StockDTO stockDTO);
+	public int deleteIncome(int no);
+	public int deleteStock(int no);
 	
 }

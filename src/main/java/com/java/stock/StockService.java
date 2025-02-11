@@ -8,11 +8,11 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface StockService {
 	
-	public List<IncomeDTO> findIncome(Model model, HttpServletRequest req);
-	public List<StockDTO> findStock(Model model, HttpServletRequest req);
-	public int editincome(HttpServletRequest req);
-	public int editstock(HttpServletRequest req);
-	public int deleteincome(HttpServletRequest req);
-	public int deletestock(HttpServletRequest req);
+	public String searchIncome(Model model, HttpServletRequest req);
+	public String searchStock(Model model, HttpServletRequest req);
+	public String editincome(HttpServletRequest req);
+	public String editstock(HttpServletRequest req);
+	public String deleteincome(HttpServletRequest req);
+	public String deletestock(HttpServletRequest req);
 
 }

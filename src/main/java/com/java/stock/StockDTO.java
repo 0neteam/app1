@@ -21,5 +21,6 @@ public class StockDTO {
 	private String name;
 	private int qty;
 	private int price;
+	private String category;
 	
 }

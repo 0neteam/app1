@@ -12,34 +12,35 @@ public class StockDaoImp implements StockDao {
 	
 	private final StockMapper stockMapper;
 	
+    @Override
+    public List<IncomeDTO> searchIncome(Integer pcode, String icode, String pname) {
+        return stockMapper.searchIncome(pcode, icode, pname);
+    }
+    
+    @Override
+    public List<StockDTO> searchStock(StockDTO stockDTO) {
+        return stockMapper.searchStock(stockDTO);
+    }
+
 	@Override
-	public List<IncomeDTO> findIncome(int no) {
-		return stockMapper.findIncome(no);
+	public int editIncome(IncomeDTO incomeDTO) {
+		return stockMapper.editIncome(incomeDTO);
 	}
 
 	@Override
-	public List<StockDTO> findStock(int no) {
-		return stockMapper.findStock(no);
+	public int editStock(StockDTO stockDTO) {
+		return stockMapper.editStock(stockDTO);
 	}
 
 	@Override
-	public int editincome(StockDTO stockDTO) {
-		return stockMapper.editincome(stockDTO);
+	public int deleteIncome(int no) {
+		return stockMapper.deleteIncome(no);
 	}
 
 	@Override
-	public int editstock(StockDTO stockDTO) {
-		return stockMapper.editstock(stockDTO);
+	public int deleteStock(int no) {
+		return stockMapper.deleteStock(no);
 	}
 
-	@Override
-	public int deleteincome(int no) {
-		return stockMapper.deleteincome(no);
-	}
-
-	@Override
-	public int deletestock(int no) {
-		return stockMapper.deletestock(no);
-	}
 
 }

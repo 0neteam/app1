@@ -28,7 +28,7 @@ $(document).ready(function() {
                             <tr>
                                 <td>${item.itemCode}</td>
                                 <td>${item.itemName}</td>
-								<td>${item.qty}</td>
+                                <td>${item.qty}</td>
                             </tr>
                         `);
                     });
@@ -44,4 +44,5 @@ $(document).ready(function() {
             }
         });
     }
+
 });
