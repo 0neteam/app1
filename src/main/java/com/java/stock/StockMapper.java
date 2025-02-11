@@ -12,6 +12,7 @@ public interface StockMapper {
 	
 	@Select("<script>" +
             "SELECT " +
+            "oi.no AS no, " +
             "oi.orderitemNo AS orderItemNo, " +
             "oi.no AS incomeId, " +
             "st.name AS name, " +
@@ -24,34 +25,33 @@ public interface StockMapper {
             "JOIN stg_incoming inc ON oi.orderitemNo = inc.incomeId " +
             "JOIN stg_order o ON oi.orderNo = o.orderNo " +
             "JOIN stg_stock st ON oi.itemCode = st.itemCode " +
-            "WHERE 1=1 " +
-            "<if test='pcode != null'>AND oi.orderitemNo = #{pcode} </if> " +
-            "<if test='icode != null'>AND inc.orderNo = #{icode} </if> " +
-            "<if test='pname != null'>AND st.name LIKE CONCAT('%', #{pname}, '%') </if>" +
-            "<if test='pcode == null and icode == null and pname == null'>" +
-            "ORDER BY incomeDate DESC</if> " +
+            "WHERE 1=1 AND oi.useYN = 'Y'" +
+	        "<if test='category == 1'>AND incomeCode = #{incomeCode} </if> " +
+	        "<if test='category == 2'>AND itemCode = #{itemCode} </if>" +
+	        "<if test='category == 3'>AND name LIKE CONCAT('%', #{name}, '%')</if>" +
+            "ORDER BY incomeId ASC, orderItemNo ASC" +
             "</script>")
-	public List<IncomeDTO> searchIncome(Integer pcode, String icode, String pname);
+	public List<IncomeDTO> searchIncome(IncomeDTO incomeDTO);
 	
 	@Select("<script>" +
-	        "SELECT itemCode, name, qty FROM stg_stock " +
-	        "WHERE 1=1 " +
-	        "<if test='itemCode != null and category == 1'>AND itemCode = #{itemCode} </if> " +
-	        "<if test='itemCode != null and category == 2'>AND name LIKE CONCAT('%', #{name}, '%') </if>" +
-	        "<if test='itemCode == null or category == null'>ORDER BY itemCode ASC</if>" +
+	        "SELECT no, itemCode, name, qty FROM stg_stock " +
+	        "WHERE 1=1 AND oi.useYN = 'Y'" +
+	        "<if test='category == 1'>AND itemCode = #{itemCode} </if> " +
+	        "<if test='category == 2'>AND name LIKE CONCAT('%', #{name}, '%') </if>" +
+	        "ORDER BY itemCode ASC, name ASC" +
 	        "</script>")
 	public List<StockDTO> searchStock(StockDTO stockDTO);
 	
-	@Update("UPDATE stg_stock SET qty = #{qty} WHERE no = #{no}")
+	@Update("UPDATE stg_incoming SET incomeQty = #{orderQty}, status = #{status} WHERE no = #{no}")
 	public int editIncome(IncomeDTO incomeDTO);
 	
-	@Update("UPDATE stg_stock SET qty = #{qty} WHERE no = #{no}")
+	@Update("UPDATE stg_stock SET name = #{name}, qty = #{qty} WHERE no = #{no}")
 	public int editStock(StockDTO stockDTO);
 	
-	@Update("UPDATE stg_incoming SET use = 'N' WHERE no = #{no}")
+	@Update("UPDATE stg_incoming SET useYN = 'N' WHERE no = #{no}")
 	public int deleteIncome(int no);
 	
-	@Update("UPDATE stg_stock SET use = 'N' WHERE no = #{no}")
+	@Update("UPDATE stg_stock SET useYN = 'N' WHERE no = #{no}")
 	public int deleteStock(int no);
 
 }

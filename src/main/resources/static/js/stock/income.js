@@ -55,18 +55,24 @@ $(document).ready(function() {
         });
     }
 
-    // 팝업창을 띄우는 함수
-/*    function showPopup(itemId) {
-        // 여기서 itemId를 사용해 추가 데이터를 요청할 수 있습니다
-        // 예시로 팝업에 기본 메시지를 넣겠습니다.
-        var popupContent = `<p>아이템 ID: ${itemId}</p><p>아이템에 대한 추가 정보를 여기에 표시합니다.</p>`;
-        
-        // 팝업창 표시
-        $('#popup').html(popupContent).show();
-    }
+	$("tbody tr").on("click", function() {
+	    var quoNo = $(this).attr("data-quoNo");
+	    var _csrf = document.querySelector('input[name="_csrf"]').value;
+	    var params = {quoNo, _csrf}
+	    console.log(params);
 
-    // 팝업창 닫기
-    $('#close-popup').on('click', function() {
-        $('#popup').hide();
-    });*/
+	    $.ajax({
+	        url: '/quo',
+	        method: 'POST',
+	        data: params
+	    }).done(data => {
+	        console.log(data);
+	        // MODAL 기능
+	        // $("#supplierModal").modal("show");
+	    }).fail(error => {
+	        console.log(error);
+	    });
+
+	});
+
 });

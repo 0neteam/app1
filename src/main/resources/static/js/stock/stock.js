@@ -1,4 +1,70 @@
 $(document).ready(function() {
+
+    $("#stockEdit").on("click", () => {
+        var arr = [];
+        $("tbody tr").each((i, v) => {
+            if($(v).find("th").find("input")[0].checked) {
+                var no = $(v).find("th").find("input[name='no']").val();
+                var name = $(v).find("td").eq(1).find("input").val();
+                var qty = $(v).find("td").eq(2).find("input").val();;
+                arr[arr.length] = {no, name, qty};
+            }
+        });
+        console.log(arr);  // 선택된 대상 데이터 수정 목록
+	    $.ajax({
+	        url: '/stock/update',
+	        method: 'POST',
+	        contentType: 'application/json',
+	        data: JSON.stringify(arr),
+	        success: function(response) {
+	            alert('수정 성공!');
+	            location.reload(); // 새로고침하여 변경 반영
+	        },
+	        error: function(xhr) {
+	            alert('수정 실패: ' + xhr.responseText);
+	        }
+	    });
+	});
+    });
+
+    $("#stockDel").on("click", () => {
+        var arr = [];
+        $("tbody tr").each((i, v) => {
+            if($(v).find("th").find("input")[0].checked) {
+                var no = $(v).find("th").find("input[name='no']").val();
+                var name = $(v).find("td").eq(1).find("input").val();
+                var qty = $(v).find("td").eq(2).find("input").val();;
+                arr[arr.length] = {no, name, qty};
+            }
+        });
+        console.log(arr);  // 선택된 대상 데이터 삭제 목록 
+		$.ajax({
+		    url: '/stock/delete',
+		    method: 'POST',
+		    contentType: 'application/json',
+		    data: JSON.stringify(arr),
+		    success: function(response) {
+		        alert('삭제 성공!');
+		        location.reload();
+		    },
+		    error: function(xhr) {
+		        alert('삭제 실패: ' + xhr.responseText);
+		    }
+		});
+    });
+
+    $("#cb_all").on("change", (e) => {
+        if(e.target.checked) {
+            $("tbody tr").each((i, v) => {
+                $(v).find("th").find("input").attr("checked", true);
+            });
+        } else {
+            $("tbody tr").each((i, v) => {
+                $(v).find("th").find("input").attr("checked", false);
+            });
+        }
+    });
+
     var loading = false;  // 데이터 로딩 중인지 여부
     var page = 1;         // 현재 페이지 번호
 
@@ -43,6 +109,4 @@ $(document).ready(function() {
                 alert('데이터를 불러오는 중 오류가 발생했습니다.');
             }
         });
-    }
-
-});
+};

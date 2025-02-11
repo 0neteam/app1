@@ -3,12 +3,9 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}">
 
-<head>
-    <link rel="stylesheet" th:href="@{/css/stock/stock.css}">
-    <script src="@{/js/stock/income.js}"></script>
-</head>
-
 <main layout:fragment="content" class="container my-2">
+    <link rel="stylesheet" href="/css/stock/stock.css">
+    <script src="/js/stock/stock.js"></script>
 
     <div class="container-fluid">
 
@@ -33,16 +30,18 @@
                         </div>
                         <div class="col-sm-3"></div>
                         <div class="col-sm-3 text-end">
-                            <button type="button" class="btn btn-primary">수정</button>
-                            <button type="button" class="btn btn-danger">삭제</button>
+                            <button type="button" class="btn btn-primary" id="stockEdit">수정</button>
+                            <button type="button" class="btn btn-danger" id="stockDel">삭제</button>
                         </div>
                     </div>
                 </form>
             </div>
+            <form th:action="@{/}" method="post"></form>
             <div class="table-responsive">
 			    <table class="table table-bordered text-center">
 			        <thead class="table-light">
 			            <tr>
+                            <th><input type="checkbox" name="cb_all" id="cb_all"/></th>
 			                <th>품목코드</th>
 			                <th>품목명</th>
 			                <th>재고량</th>
@@ -53,10 +52,13 @@
 					        <td colspan="3">재고 데이터 없음</td>
 					    </tr>
 					    <tr th:each="stock : ${result}">
-					    	<td></td>
+					    	<th>
+                                <input type="checkbox" name="cb" class="cb" />
+                                <input type="hidden" name="no" th:value="${stock.no}" />
+                            </th>
 					        <td th:text="${stock.itemCode}"></td>
-					        <td th:text="${stock.name}"></td>
-					        <td th:text="${stock.qty}"></td>
+					        <td><input type="text" name="name" th:value="${stock.name}" /></td>
+					        <td><input type="text" name="qty" th:value="${stock.qty}" /></td>
 					    </tr>
 					</tbody>
                 </table>

@@ -13,8 +13,8 @@ public class StockDaoImp implements StockDao {
 	private final StockMapper stockMapper;
 	
     @Override
-    public List<IncomeDTO> searchIncome(Integer pcode, String icode, String pname) {
-        return stockMapper.searchIncome(pcode, icode, pname);
+    public List<IncomeDTO> searchIncome(IncomeDTO incomeDTO) {
+        return stockMapper.searchIncome(incomeDTO);
     }
     
     @Override

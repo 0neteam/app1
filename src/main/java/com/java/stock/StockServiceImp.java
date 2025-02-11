@@ -16,13 +16,7 @@ public class StockServiceImp implements StockService {
 	
 	@Override
 	public String searchIncome(Model model, HttpServletRequest req) {
-		Integer pcode = Integer.parseInt(req.getParameter("pcode"));
-		String icode = req.getParameter("icode");
-		String pname = req.getParameter("pname");
-		List<IncomeDTO> incList = stockDao.searchIncome(pcode, icode, pname);
-		System.out.println("-------------------------------------");
-		model.addAttribute("result", incList);
-		return "stock/income";
+		return "stock/imcome";
 	}
 
 	@Override
@@ -36,9 +30,7 @@ public class StockServiceImp implements StockService {
 		if(category.equals("1")) {
 			try {
 				int itemCode = Integer.parseInt(search);
-				System.out.println(itemCode);
 				StockDTO stockDTO = StockDTO.builder().category(category).itemCode(itemCode).build();
-				System.out.println(stockDTO);
 				List<StockDTO> stockDTOs = stockDao.searchStock(stockDTO);
 				model.addAttribute("result", stockDTOs);		
 				System.out.println(stockDTOs);
