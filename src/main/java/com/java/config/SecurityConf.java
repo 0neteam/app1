@@ -50,12 +50,7 @@ public class SecurityConf {
             
             form.permitAll(); // 로그인 페이지는 모든 사용자 접근 가능
         });
-        
-        http.csrf(csrf -> csrf        		
-                .ignoringRequestMatchers("/user/create/checkemail")  // 가입시 이메일 확인 요청 버튼 주소 CSRF 보호 비활성화할 경로 추가   
-                .ignoringRequestMatchers("/user/delete")  // 가입시 이메일 확인 요청 버튼 주소 CSRF 보호 비활성화할 경로 추가
-                
-        	    );
+    
         
         http.authorizeHttpRequests(req -> {
             req.requestMatchers("/", "/signUp").permitAll(); // 메인 페이지 및 회원가입 페이지는 인증 없이 접근 가능

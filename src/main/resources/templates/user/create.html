@@ -3,21 +3,13 @@
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}">      
-      
-    <head>
-	    <th:block layout:fragment="css">
-	    	<link rel="stylesheet" href="/css/layouts/default.css"> <!-- default 적용 문제로 재추가 -->
-	        <link rel="stylesheet" href="/css/user/create.css">
-	    </th:block>
-	    <th:block layout:fragment="script">	        
-	        <script src="/js/layouts/default.js"></script>		
-	        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	        <script src="/js/user/create.js"></script>
-	    </th:block>
-	    <meta name="csrf-token" content="${_csrf.token}"/>
-	</head>
          
 <main layout:fragment="content" class="container my-2">
+
+<link rel="stylesheet" href="/css/user/create.css">		
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="/js/user/create.js"></script>
+
 	<div class="container mt-5">
         <h2 class="mb-4">[창고] 직원 가입</h2>
         <div class="card p-4">

@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface UserService {
 
-	public String list(Model model, HttpServletRequest req);
+	public String list(Model model, String searchOption, String searchKeyword);
 	
 	public String save(UserDTO user);
 	
