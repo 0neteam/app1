@@ -52,5 +52,5 @@ logging:
   level:
     org:
       springframework:
-        web: DEBUG
-      thymeleaf: DEBUG
+        web: INFO
+      thymeleaf: INFO

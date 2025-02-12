@@ -11,50 +11,57 @@ public interface BizMapper {
 
     @Select({
             "<script>",
-            "SELECT bizNo, bizName, bizType FROM stg_client",
-            "<where>",
-            "   <choose>",
-            "       <when test='searchOption = \"1\"'>",
-            "           AND bizName LIKE CONCAT('%', #{keyword}, '%')",
-            "       </when>",
-            "       <when test='searchOption = \"2\"'>",
-            "           AND CAST(bizNo AS CHAR) LIKE CONCAT('%', #{keyword}, '%')",
-            "       </when>",
-            "       <when test='searchOption = \"3\"'>",
-            "           AND bizType LIKE CONCAT('%', #{keyword}, '%')",
-            "       </when>",
-            "   </choose>",
-            "</where>",
-            "</script>"
-    })
-    public List<BizDTO> findList();
+            "SELECT bizNo, bizName, bizType FROM stg_client WHERE useYN = 'Y' ",
+            "<if test='searchOption == \"1\"'>",
+            "   AND bizName LIKE CONCAT('%', #{keyword}, '%') ",
+            "</if>",
+            "<if test='searchOption == \"2\"'>",
+            "   AND CAST(bizNo AS CHAR) LIKE CONCAT('%', #{keyword}, '%')",
+            "</if>",
+            "<if test='searchOption == \"3\"'>",
+            "   AND bizType LIKE CONCAT('%', #{keyword}, '%')",
+            "</if>",
+            "</script>"})
+    public List<BizDTO> findList(BizReqDTO bizReqDTO);
 
-//    @Select({"<script>" +
-//            "SELECT bizNo,bizName,bizType FROM stg_client" +
-//            "where true" +
-//            "<choose>" +
-//            "<when test='searchOption==\"1\"'>" +
-//            "and bizName like concat('%', #{keyword} ,'%')" +
-//            "</when>" +
-//            "<when test='searchOption==\"2\"'>" +
-//            "and bizNo like concat('%', #{keyword} ,'%')" +
-//            "</when>" +
-//            "<when test='searchOption==\"3\"'>" +
-//            "and bizType like concat('%', #{keyword} ,'%')" +
-//            "</when>" +
-//            "</choose>" +
-//            "</script>"})
-//    public List<BizDTO> findList();
-
-    @SelectKey(statementType = StatementType.PREPARED, statement = "select last_insert_id() as no", keyProperty = "bizNo", before = false, resultType = int.class)
-    //@Insert("INSERT INTO 'stg_client'")
-    int create(BizDTO biz);
-
-    @Select("SELECT * " +
-            "FROM stg_client " +
-            "LEFT JOIN stg_api_key " +
-            "ON stg_client.bizNo = stg_api_key.bizNo " +
-            "AND stg_api_key.`type` = 'order' " +
-            "WHERE stg_client.bizNo = #{no}")
+    @Select("SELECT * FROM stg_client WHERE bizNo = #{no}")
     BizDTO findOne(int no);
+
+    @Select("SELECT * FROM stg_api_key WHERE useYN = 'Y' AND bizNo = #{no} ORDER BY TYPE desc")
+    List<BizApiKeyDTO> findByApiKey(int no);
+
+    @Update("UPDATE stg_client SET "
+            +"      zipCode = #{zipCode},"
+            +"      adr = #{adr},"
+            +"      adrDetail = #{adrDetail},"
+            +"      ceo = #{ceo},"
+            +"      bizTel = #{bizTel},"
+            +"      email = #{email} "
+            +"WHERE bizNo = #{bizNo}")
+    int updateBiz(BizDTO bizDTO);
+
+    @Update(" UPDATE stg_api_key SET "
+	        +"       url = #{url}"
+            +" WHERE bizNo = #{bizNo} AND type = #{type}")
+    int updateApi(BizApiKeyDTO bizApiKeyDTO);
+
+    @Update("UPDATE stg_client SET useYN = 'N' WHERE bizNo = #{bizNo}")
+    int deleteBiz(int bizNo);
+
+    @Update("UPDATE stg_api_key SET useYN = 'N' WHERE bizNo = #{bizNo}")
+    int deleteApi(int bizNo);
+
+    @SelectKey(statementType = StatementType.PREPARED, statement = "select last_insert_id() as bizNo", keyProperty = "bizNo", before = false, resultType = int.class)
+    @Insert("INSERT INTO stg_client "
+            +"  (bizNum, bizName, bizTel, bizFax, email, ceo, bizType, zipCode, adr, adrDetail) "
+            +"  VALUE "
+            +"  (#{bizNum}, #{bizName}, #{bizTel}, #{bizFax}, #{email}, #{ceo}, #{bizType}, #{zipCode}, #{adr}, #{adrDetail})")
+    int createBiz(BizDTO bizDTO);
+
+    @Insert("INSERT INTO stg_api_key "
+            +"  (`bizNo`, `type`, `url`, `key`) "
+            +"  VALUE "
+            +"  (#{bizNo}, #{type}, #{url}, #{key})")
+    int createApi(BizApiKeyDTO bizApiKeyDTO);
+
 }
