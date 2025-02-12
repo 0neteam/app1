@@ -11,6 +11,12 @@
       border: 1px solid black;
     }
 
+    /* 선택된 데이터 컨테이너에 줄을 추가 (새로 추가되는 항목에만 적용) */
+    #selectedDataContainer .row {
+      border: 1px solid black; /* 데이터가 추가되는 행에 선을 추가 */
+      margin-bottom: 5px; /* 각 항목 간 간격 추가 */
+    }
+
     /* 좌측 본문 */
     .article {
       display: inline-block;
@@ -25,147 +31,128 @@
     }
   </style>
 
-  <form action="">
+  <form th:action="@{/order/orderRequest}" method="POST">
+    <!-- CSRF 토큰을 자동으로 처리하는 hidden input -->
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     <div class="container text-center">
       <!-- 거래처 선택과 품목조회 버튼을 왼쪽 정렬 -->
       <div class="d-flex justify-content-start my-2">
-        <button type="button" class="btn btn-light">거래처 선택</button>
+        <select class="form-select" aria-label="거래처 선택" style="width: 150px;">
+          <option selected>거래처 선택</option>
+          <option value="1">거래처 A</option>
+          <option value="2">거래처 B</option>
+          <option value="3">거래처 C</option>
+        </select>
         <button type="button" class="btn btn-light ms-2" data-bs-toggle="modal" data-bs-target="#modalViewProduct">품목조회</button>
       </div>
 
-      <div class="row">
-        <div class="col-sm-2">서류코드</div>
-        <div class="col-sm-2"></div>
-        <div class="col-sm-4"></div>
-        <div class="col-sm-2">작성일자</div>
-        <div class="col-sm-2"></div>
-      </div>
+      <!-- 서류코드와 품번 라인 사이에 여백 추가 -->
+      <div class="my-3"></div> <!-- 여백을 추가하는 부분 -->
 
-      <!-- 품번, 품목코드, 품목명, 수량, 비고 항목 제목 추가 -->
+      <!-- 순번, 품번, 품목코드, 품목명, 수량, 비고 항목 제목 추가 -->
       <div class="row">
+        <div class="col-sm-1">순번</div> <!-- 순번 칸 추가 -->
         <div class="col-sm-2">품번</div>
         <div class="col-sm-2">품목코드</div>
         <div class="col-sm-3">품목명</div>
-        <div class="col-sm-2">수량</div>
-        <div class="col-sm-3">비고</div>
+        <div class="col-sm-1">수량</div> <!-- 수량 칸 크기 수정 -->
+        <div class="col-sm-2">비고</div> <!-- 비고 칸을 수량 옆에 배치 -->
+      </div>
+    </div>
+
+      <div class="container mt-3">
+        <!-- 선택된 데이터가 출력될 영역 -->
+        <div id="selectedDataContainer"></div>
       </div>
 
-      <!-- 반복되는 데이터 시작 (두 번째 행부터) -->
-      <div class="row">
-        <div class="col-sm-2"><input type="text" class="form-control" value="P001" /></div>
-        <div class="col-sm-2"><input type="text" class="form-control" value="M001" /></div>
-        <div class="col-sm-3"><input type="text" class="form-control" value="제품 A" /></div>
-        <div class="col-sm-2"><input type="number" class="form-control" value="100" /></div>
-        <div class="col-sm-3"><input type="text" class="form-control" value="비고 A" /></div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-2"><input type="text" class="form-control" value="P002" /></div>
-        <div class="col-sm-2"><input type="text" class="form-control" value="M002" /></div>
-        <div class="col-sm-3"><input type="text" class="form-control" value="제품 B" /></div>
-        <div class="col-sm-2"><input type="number" class="form-control" value="200" /></div>
-        <div class="col-sm-3"><input type="text" class="form-control" value="비고 B" /></div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-2"><input type="text" class="form-control" value="P003" /></div>
-        <div class="col-sm-2"><input type="text" class="form-control" value="M003" /></div>
-        <div class="col-sm-3"><input type="text" class="form-control" value="제품 C" /></div>
-        <div class="col-sm-2"><input type="number" class="form-control" value="300" /></div>
-        <div class="col-sm-3"><input type="text" class="form-control" value="비고 C" /></div>
-      </div>
-      <!-- 반복되는 데이터 끝 -->
-
-      <!-- 납기 요청 일자 버튼을 추가 -->
-      <div class="d-flex justify-content-start my-2">
-        <button type="button" class="btn btn-light">납기요청일자</button>
-      </div>
-
-      <!-- 발주요청 버튼과 취소 버튼을 오른쪽 끝으로 배치 -->
-      <div class="d-flex justify-content-end my-2">
-        <button type="button" class="btn btn-primary me-2">발주요청</button> <!-- 발주요청 버튼 -->
-        <button type="button" class="btn btn-danger">취소</button> <!-- 취소 버튼 -->
+      <div class="d-flex align-items-center my-2">
+        <input type="date" class="form-control" id="dueDate" style="width: 150px;" />
+        <div class="ms-auto">
+          <button type="button" class="btn btn-primary me-2">발주요청</button> <!-- 발주요청 버튼 -->
+          <button type="button" class="btn btn-danger">취소</button> <!-- 취소 버튼 -->
+        </div>
       </div>
     </div>
   </form>
 
   <!-- 품목조회버튼과 연결되는 모달창 -->
   <div class="modal" id="modalViewProduct">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg"> <!-- 모달 크기 유지 -->
       <div class="modal-content">
         <div class="modal-header">
-          <h1>"거래처 명"</h1>
+          <h1>거래처 명</h1>
         </div>
         <div class="modal-body">
           <form action="">
             <div class="container text-center">
+              <!-- 기존 헤더 -->
               <div class="row">
                 <div class="col-sm-1">선택</div>
                 <div class="col-sm-2">품번</div>
                 <div class="col-sm-2">품목코드</div>
-                <div class="col-sm-3">품목명</div>
-                <div class="col-sm-2">수량</div>
+                <div class="col-sm-2">품목명</div> <!-- 품목명 칸 줄이기 -->
+                <div class="col-sm-2">수량</div> <!-- 수량 칸 키우기 -->
                 <div class="col-sm-2">비고</div>
               </div>
 
               <!-- 반복되는 데이터 -->
-              <div class="row">
+              <div class="row select-row" data-row-id="1">
                 <div class="col-sm-1">
-                  <input type="checkbox" />
+                  <input type="checkbox" class="select-checkbox" />
                 </div>
                 <div class="col-sm-2">
-                  <input type="text" class="form-control" value="P001" />
+                  <input type="text" class="form-control" value="1" />
                 </div>
                 <div class="col-sm-2">
-                  <input type="text" class="form-control" value="M001" />
+                  <input type="text" class="form-control" value="1" />
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <input type="text" class="form-control" value="제품 A" />
                 </div>
                 <div class="col-sm-2">
-                  <input type="number" class="form-control" value="100" />
+                  <input type="number" class="form-control form-control-lg" value="100" /> <!-- 수량 칸 크기 키우기 -->
                 </div>
                 <div class="col-sm-2">
                   <input type="text" class="form-control" value="비고 A" />
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row select-row" data-row-id="2">
                 <div class="col-sm-1">
-                  <input type="checkbox" />
+                  <input type="checkbox" class="select-checkbox" />
                 </div>
                 <div class="col-sm-2">
-                  <input type="text" class="form-control" value="P002" />
+                  <input type="text" class="form-control" value="2" />
                 </div>
                 <div class="col-sm-2">
-                  <input type="text" class="form-control" value="M002" />
+                  <input type="text" class="form-control" value="2" />
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <input type="text" class="form-control" value="제품 B" />
                 </div>
                 <div class="col-sm-2">
-                  <input type="number" class="form-control" value="200" />
+                  <input type="number" class="form-control form-control-lg" value="200" /> <!-- 수량 칸 크기 키우기 -->
                 </div>
                 <div class="col-sm-2">
                   <input type="text" class="form-control" value="비고 B" />
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row select-row" data-row-id="3">
                 <div class="col-sm-1">
-                  <input type="checkbox" />
+                  <input type="checkbox" class="select-checkbox" />
                 </div>
                 <div class="col-sm-2">
-                  <input type="text" class="form-control" value="P003" />
+                  <input type="text" class="form-control" value="3" />
                 </div>
                 <div class="col-sm-2">
-                  <input type="text" class="form-control" value="M003" />
+                  <input type="text" class="form-control" value="3" />
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <input type="text" class="form-control" value="제품 C" />
                 </div>
                 <div class="col-sm-2">
-                  <input type="number" class="form-control" value="300" />
+                  <input type="number" class="form-control form-control-lg" value="300" /> <!-- 수량 칸 크기 키우기 -->
                 </div>
                 <div class="col-sm-2">
                   <input type="text" class="form-control" value="비고 C" />
@@ -178,12 +165,161 @@
         </div>
         <div class="modal-footer">
           <!-- 선택 확정과 취소 버튼 추가 -->
-          <button type="button" class="btn btn-primary me-2" data-bs-dismiss="modal">선택 확정</button> <!-- 선택 확정 버튼 (파란색) -->
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button> <!-- 취소 버튼 (빨간색) -->
+          <button type="button" class="btn btn-primary me-2" id="selectConfirmBtn" data-bs-dismiss="modal">선택 확정</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
         </div>
       </div>
     </div>
   </div>
+
+
+  <script>
+    // 선택된 데이터가 출력될 영역
+    const selectConfirmBtn = document.getElementById('selectConfirmBtn');
+
+    selectConfirmBtn.addEventListener('click', function() {
+      const selectedRows = [];
+
+      // 체크된 체크박스가 있는 행 찾기
+      const rows = document.querySelectorAll('.select-row');
+      rows.forEach(row => {
+        const checkbox = row.querySelector('.select-checkbox');
+        if (checkbox.checked) {
+          const productNumber = row.querySelectorAll('input')[1].value;  // 품번
+          const itemCode = row.querySelectorAll('input')[2].value;      // 품목코드
+          const itemName = row.querySelectorAll('input')[3].value;      // 품목명
+          const quantity = row.querySelectorAll('input')[4].value;      // 수량
+          const remarks = row.querySelectorAll('input')[5].value;       // 비고
+
+          // 선택된 행의 데이터 저장
+          selectedRows.push({
+            productNumber,
+            itemCode,
+            itemName,
+            quantity,
+            remarks
+          });
+        }
+      });
+
+      // 선택된 데이터를 HTML로 그려주는 작업
+      const selectedDataContainer = document.getElementById('selectedDataContainer');
+      selectedDataContainer.innerHTML = ''; // 기존 내용 초기화
+
+      // 선택된 데이터를 하나씩 추가
+      selectedRows.forEach((rowData, index) => {
+        const rowDiv = document.createElement('div');
+        rowDiv.classList.add('row'); // 부트스트랩의 row 클래스를 사용해 줄 맞춤
+
+        // 새로운 데이터 추가 (기존 header와 맞추어 디자인)
+        rowDiv.innerHTML = `
+        <div class="col-sm-1" style="text-align: center;">${index + 1}</div> <!-- 순번 -->
+        <div class="col-sm-2" style="text-align: center;">${rowData.productNumber}</div> <!-- 품번 -->
+        <div class="col-sm-2" style="text-align: center;">${rowData.itemCode}</div> <!-- 품목코드 -->
+        <div class="col-sm-3" style="text-align: center;">${rowData.itemName}</div> <!-- 품목명 -->
+        <div class="col-sm-1" style="text-align: center;">${rowData.quantity}</div> <!-- 수량 -->
+        <div class="col-sm-2" style="text-align: center;">${rowData.remarks}</div> <!-- 비고 -->
+      `;
+        selectedDataContainer.appendChild(rowDiv);
+      });
+
+      // selectedDataContainer의 모든 .row에 대해서만 보더 제거
+      const rowsInContainer = selectedDataContainer.querySelectorAll('.row');
+      rowsInContainer.forEach(row => {
+        row.style.border = 'none'; // row에 보더 제거
+      });
+    });
+
+    // 모든 row 클릭 시 해당 행의 체크박스를 토글
+    const rows = document.querySelectorAll('.select-row');
+    rows.forEach(row => {
+      row.addEventListener('click', function () {
+        const checkbox = row.querySelector('.select-checkbox');
+        checkbox.checked = !checkbox.checked; // 체크박스 상태 토글
+      });
+    });
+
+
+    // 발주요청 버튼 클릭 이벤트 추가
+    const orderRequestBtn = document.querySelector('.btn.btn-primary');
+
+    orderRequestBtn.addEventListener('click', function() {
+      const selectedRows = [];
+
+      // 선택된 데이터가 담긴 영역을 가져옴
+      const rowsInContainer = document.querySelectorAll('#selectedDataContainer .row');
+      rowsInContainer.forEach(row => {
+
+
+
+        const itemCode = row.querySelectorAll('.col-sm-2')[1].textContent;  // 품목코드
+
+        // 품목명 -> itemName
+        const itemName = row.querySelectorAll('.col-sm-3')[0].textContent;  // 품목명
+
+        // 수량 -> qty (OrderItemDTO의 수량에 해당)
+        const quantity = row.querySelectorAll('.col-sm-1')[0].textContent;  // 수량
+
+        // 비고 -> remarks (OrderItemDTO의 비고에 해당)
+        const remarks = row.querySelectorAll('.col-sm-2')[1].textContent;  // 비고
+
+        // OrderItemDTO 객체 생성
+        const orderItemDTO = {
+          itemCode: itemCode, // 품목 코드
+          qty: quantity,      // 수량
+          remarks: remarks    // 비고
+        };
+        selectedRows.push(orderItemDTO);
+      });
+
+      // 선택된 데이터가 없으면 알림창을 띄움
+      if (selectedRows.length === 0) {
+        alert('데이터가 없습니다.');
+        return; // 데이터가 없으면 더 이상 진행하지 않음
+      }
+
+      // dueDate 값 가져오기
+      const dueDate = document.getElementById('dueDate').value;
+
+      // dueDate가 빈 값이면 알림창을 띄움
+      if (!dueDate) {
+        alert('발주 최종 일자를 입력해주세요.');
+        return; // 빈 값이면 더 이상 진행하지 않음
+      }
+
+      // 선택된 데이터와 dueDate 출력
+      selectedRows.forEach(item => {
+        item.dueDate = dueDate; // dueDate 추가
+      });
+
+      console.log('선택된 데이터:', selectedRows);
+      var _csrf = document.querySelector('input[name="_csrf"]').value;
+      var params = {
+        selectedRows: JSON.stringify(selectedRows),  // selectedRows 배열을 JSON 문자열로 변환하여 전송
+        _csrf: _csrf
+      };
+      console.log(params);
+
+      $.ajax({
+        url: '/order/orderRequest',
+        method: 'POST',
+        data: params
+      }).done(data => {
+        console.log(data);
+        // MODAL 기능
+        // $("#supplierModal").modal("show");
+      }).fail(error => {
+        console.log(error);
+      });
+    });
+
+
+
+  </script>
+
+
+
+
 
 </main>
 </html>

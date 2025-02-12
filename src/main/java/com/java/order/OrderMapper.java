@@ -1,6 +1,7 @@
 package com.java.order;
 
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -33,6 +34,16 @@ public interface OrderMapper {
             "</script>"
     })
     public List<OrderDTO> searchOrders(@Param("searchTerm") String searchTerm);
+
+
+    @Insert("INSERT INTO stg_order (orderNo, bizNo, orderReqDate) " +
+            "VALUES (#{orderNo}, #{bizNo}, #{orderReqDate})")
+    void insertOrder(OrderDTO order);
+
+    @Insert("INSERT INTO stg_order_item (orderNo, itemCode, qty) " +
+            "VALUES (#{orderNo}, #{itemCode}, #{qty})")
+    void insertOrderItem(OrderItemDTO orderItem);
+
 
 
 }

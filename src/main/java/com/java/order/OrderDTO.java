@@ -22,4 +22,6 @@ public class OrderDTO {
     private String transpStatus;
     private String departure;
     private String driverName;
+    private String bizNo;
+
 }

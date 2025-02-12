@@ -19,4 +19,18 @@ public class OrderDaoImp implements OrderDAO{
     public List<OrderDTO> searchOrders(String searchTerm) {
         return orderMapper.searchOrders(searchTerm);
     }
+
+
+    @Override
+    public void insertOrder(OrderDTO order) {
+        // OrderDTO 객체를 Mapper에 전달하여 DB에 주문 데이터를 삽입
+        orderMapper.insertOrder(order);
+    }
+
+    @Override
+    public void insertOrderItem(OrderItemDTO orderItem) {
+        // OrderItemDTO 객체를 Mapper에 전달하여 DB에 주문 항목 데이터를 삽입
+        orderMapper.insertOrderItem(orderItem);
+    }
+
 }
