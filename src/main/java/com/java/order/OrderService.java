@@ -1,9 +1,6 @@
 package com.java.order;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
-
-import java.util.List;
 
 public interface OrderService {
     // 발주 조회
