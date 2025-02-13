@@ -13,7 +13,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import jakarta.servlet.http.HttpSession;
 
 @Configuration // 설정 클래스를 나타내는 어노테이션
-@EnableWebSecurity(debug = true) // Spring Security를 활성화하고 디버그 모드를 켬
+@EnableWebSecurity //(debug = true) // Spring Security를 활성화하고 디버그 모드를 켬
 @EnableMethodSecurity // 메서드 수준의 보안 설정을 활성화
 public class SecurityConf {
 
