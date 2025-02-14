@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+
+<main layout:fragment="content" class="container my-2">
+    <link rel="stylesheet" href="/css/stock/stock.css">
+    <script src="/js/stock/income.js"></script>
+
+    <div class="container-fluid">
+        <!-- 입고 섹션 -->
+        <div class="container section-container p-4 border rounded shadow-sm">
+            <div class="text-center">
+                <h2>입고</h2>
+                <form th:action="@{/income}" method="get">
+                    <div class="row align-items-center mb-3">
+                        <div class="col-lg-2 my-1">
+                            <select class="form-select" name="category1" id="category1">
+                                <option value="0">전체</option>
+                                <option value="1">발주코드</option>
+                                <option value="2">품목코드</option>
+                                <option value="3">품목명</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 my-1">
+                            <select class="form-select" name="category2" id="category2">
+                                <option value="0">상태 전체</option>
+                                <option value="1">미입고</option>
+                                <option value="2">운송비정상</option>
+                                <option value="3">거래처비정상</option>
+                                <option value="4">정상</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 my-1">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="search" id="search" />
+                                <button class="btn btn-success" type="submit">검색</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 my-1"></div>
+                        <div class="col-lg-3 my-1 text-end">
+                            <button type="button" class="btn btn-primary" id="incomeEdit">수정</button>
+                            <button type="button" class="btn btn-danger" id="incomeDel">삭제</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="table-responsive">
+                <form th:action="@{/}" method="post"></form>
+			    <table class="table table-bordered text-center" style="min-width: 992px;">
+			        <thead class="table-light">
+			            <tr>
+			            	<th><input type="checkbox" name="cb_all" id="cb_all" /></th>
+			                <th>발주코드</th>
+			                <th>품목코드</th>
+			                <th>품목명</th>
+			                <th>발주수량</th>
+			                <th>입고수량</th>
+			                <th>발주일자</th>
+			                <th>입고일자</th>
+			                <th>거래처</th>
+			                <th>상태</th>
+			            </tr>
+			        </thead>
+			        <tbody id="data-container">
+			            <tr th:if="${result == null or result.isEmpty()}">
+					        <td colspan="9">재고 데이터 없음</td>
+					    </tr>
+					    <tr th:each="income : ${result}">
+					    	<th>
+                                <input type="checkbox" name="cb" class="cb" />
+                                <input type="hidden" name="incomeNo" th:value="${income.incomeNo}" />
+                            </th>
+					        <td th:text="${income.orderNo}"></td>
+					        <td th:text="${income.itemCode}"></td>
+					        <td th:text="${income.stockName}"></td>
+					        <td th:text="${income.orderQty}"></td>
+					        <td><input type="number" name="incomeQty" min="0" th:value="${income.incomeQty}" class="form-control" readonly /></td>
+					        <td th:text="${income.orderDate}"></td>
+					        <td th:text="${income.incomeDate}"></td>
+					        <td><button class="btn btn-info income-btn" th:attr="data-bizNo=${income.bizNo}">거래처</button></td>
+					        <td>
+							    <select class="form-select" name="status" id="status" th:value="${income.status}" disabled >
+							        <option value="미입고" th:selected="${income.status == '미입고'}">미입고</option>
+							        <option value="정상" th:selected="${income.status == '정상'}">정상</option>
+							        <option value="거래처비정상" th:selected="${income.status == '거래처비정상'}">거래처비정상</option>
+							        <option value="운송비정상" th:selected="${income.status == '운송비정상'}">운송비정상</option>
+							    </select>
+							</td>
+					    </tr>
+			        </tbody>
+			    </table>
+			</div>
+        </div>
+    </div>
+
+    <!-- 거래처 Modal -->
+    <div class="modal fade" id="supplierModal" tabindex="-1" aria-labelledby="supplierModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="supplierModalLabel">거래처 정보</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>법인 이름:</strong> <strong id="bizName"></strong></p>
+                    <p><strong>회사 연락처:</strong> <strong id="bizTel"></strong></p>
+                    <p><strong>회사 이메일:</strong> <strong id="email"></strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+</html>
