@@ -10,7 +10,9 @@ $(document).ready(function() {
 				
         if (confirm("정말로 수정하시겠습니까?")) {
   
-            var _csrf = document.querySelector('input[name="_csrf"]').value;
+            var _csrf = $("meta[name='_csrf']").attr("content");
+			var _csrf_header = $("meta[name='_csrf_header']").attr("content");
+            // var _csrf = document.querySelector('input[name="_csrf"]').value;
             var inComes = []
             $(".cb").each( (i, e) => {
                 if($(e).prop("checked")) {
@@ -37,7 +39,7 @@ $(document).ready(function() {
               $.ajax({
                   url: '/income/edit',
                   method: 'POST',
-                  beforeSend: x => x.setRequestHeader("X-XSRF-TOKEN", _csrf),
+                  beforeSend: x => x.setRequestHeader(_csrf_header, _csrf),
                   dataType : 'json',
                   contentType: 'application/json; charset=utf-8',
                   data: JSON.stringify(params),
@@ -66,13 +68,16 @@ $(document).ready(function() {
 
 		if (confirm("정말로 삭제하시겠습니까?")) {
   
-            var _csrf = document.querySelector('input[name="_csrf"]').value;
+            var _csrf = $("meta[name='_csrf']").attr("content");
+			var _csrf_header = $("meta[name='_csrf_header']").attr("content");
+            // var _csrf = document.querySelector('input[name="_csrf"]').value;
             var inComes = []
             $(".cb").each( (i, e) => {
                 if($(e).prop("checked")) {
                     var row = $("#data-container tr").eq(i)[0];
                     var incomeNo = row.querySelector('input[name="incomeNo"]').value;
-                    inComes[inComes.length] = { incomeNo }
+					var itemCode = row.querySelector('td:nth-child(3)').innerText;
+					inComes[inComes.length] = { incomeNo, itemCode }
                 }
             });
               
@@ -83,7 +88,7 @@ $(document).ready(function() {
             $.ajax({
                 url: '/income/edit',
                 method: 'POST',
-                beforeSend: x => x.setRequestHeader("X-XSRF-TOKEN", _csrf),
+                beforeSend: x => x.setRequestHeader(_csrf_header, _csrf),
                 dataType : 'json',
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(params),

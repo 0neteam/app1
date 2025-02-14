@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
 @Mapper
@@ -43,6 +45,8 @@ public interface StockMapper {
             "</script>")
 	public List<IncomeDTO> searchIncome(IncomeDTO incomeDTO);
 	
+
+	@SelectKey(statement = "SELECT LAST_INSERT_ID() AS no", keyProperty = "incomeNo", before = false, resultType = int.class)
 	@Insert("INSERT INTO stg_incoming "
 			+" (`orderItemNo`, `qty`, `status`) "
 			+"VALUE "
@@ -53,7 +57,7 @@ public interface StockMapper {
 	public int editIncome(IncomeDTO incomeDTO);
 	
 	@Update("UPDATE stg_incoming SET useYN = 'N' WHERE no = ${incomeNo}")
-	public int deleteIncome(int incomeNo);
+	public int deleteIncome(IncomeDTO incomeDTO);
 	
 	
 	@Select("<script>" +
@@ -69,5 +73,14 @@ public interface StockMapper {
 		
 	@Update("UPDATE stg_stock SET useYN = 'N' WHERE itemCode = #{itemCode}")
 	public int deleteStock(int no);
+	
+	
+	@Select("SELECT qty FROM stg_incoming WHERE no = #{incomeNo}")
+	public Integer searchQty(int incomeNo);
 
+	@Update("UPDATE stg_stock SET qty = qty + #{no} WHERE itemCode = #{itemCode}")
+	public int updateQtyP(@Param("itemCode") int itemCode, @Param("no") int no);
+
+	@Update("UPDATE stg_stock SET qty = qty - #{no} WHERE itemCode = #{itemCode}")
+	public int updateQtyM(@Param("itemCode") int itemCode, @Param("no") int no);
 }

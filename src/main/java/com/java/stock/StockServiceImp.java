@@ -44,7 +44,7 @@ public class StockServiceImp implements StockService {
 		if("delete".equals(stockReqDTO.getState())) {
 			for(IncomeDTO incomeDTO : stockReqDTO.getInComes()) {
 				if(incomeDTO.getIncomeNo() > 0) {
-					if(stockDao.deleteIncome(incomeDTO.getIncomeNo()) == 1) {
+					if(stockDao.deleteIncome(incomeDTO) == 1) {
 						status = true;
 					}
 				}

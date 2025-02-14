@@ -20,13 +20,11 @@ public class StockController {
 	
 	@GetMapping("/stock")
 	public String stocklist(Model model, @RequestParam(required = false) Map<String, String> paramMap) {
-		System.out.println(paramMap);
 		return stockService.searchStock(model, StockDTO.setStock(paramMap));
 	}
 	
-	@GetMapping("/stock/income")
+	@GetMapping("/income")
 	public String incomelist(Model model, @RequestParam(required = false) Map<String, String> paramMap) {
-		System.out.println(paramMap);
 		return stockService.searchIncome(model, IncomeDTO.setIncome(paramMap));
 	}
 	

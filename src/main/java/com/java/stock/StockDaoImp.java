@@ -14,23 +14,70 @@ public class StockDaoImp implements StockDao {
 	
     @Override
     public List<IncomeDTO> searchIncome(IncomeDTO incomeDTO) {
-        System.out.println(incomeDTO);
         return stockMapper.searchIncome(incomeDTO);
     }
 
     @Override
     public int createIncome(IncomeDTO incomeDTO) {
-        return stockMapper.createIncome(incomeDTO);
+
+    	int create = stockMapper.createIncome(incomeDTO);
+    	System.out.println(incomeDTO);
+    	
+    	if (create > 0) {
+    		System.out.println(incomeDTO);
+    	    Integer incqty = stockMapper.searchQty(incomeDTO.getIncomeNo());
+            System.out.println(incqty);
+    	    if (incqty == null) {
+                incqty = 0;
+            }
+            System.out.println(incqty);
+    	    int itemCode = incomeDTO.getItemCode();
+    	    System.out.println(itemCode);
+    	    
+    	    return stockMapper.updateQtyP(itemCode, incqty);
+    	} else {
+    		return 0;
+    	}
     }
+
 
     @Override
     public int editIncome(IncomeDTO incomeDTO) {
-        return stockMapper.editIncome(incomeDTO);
+    	
+    	Integer stqty = stockMapper.searchQty(incomeDTO.getIncomeNo());
+
+        if (stqty != null) {
+        	
+        	int edit = stockMapper.editIncome(incomeDTO);
+        	
+        	if (edit > 0) {
+        	    int incqty = stockMapper.searchQty(incomeDTO.getIncomeNo());
+        	    int itemCode = incomeDTO.getItemCode();
+        	    int diff = incqty - stqty;
+        	    
+        	    return stockMapper.updateQtyP(itemCode, diff);
+        	} else {
+        		return 0;
+        	}
+        } else {
+        	return 0;
+        }
     }
     
     @Override
-    public int deleteIncome(int incomeNo) {
-    	return stockMapper.deleteIncome(incomeNo);
+    public int deleteIncome(IncomeDTO incomeDTO) {
+    	
+    	int delete = stockMapper.deleteIncome(incomeDTO);
+    	
+    	if (delete > 0) {
+    		int incomeNo = incomeDTO.getIncomeNo();
+    		int itemCode = incomeDTO.getItemCode();
+    	    int incqty = stockMapper.searchQty(incomeNo);
+    	    
+    	    return stockMapper.updateQtyM(itemCode, incqty);
+    	} else {
+    		return 0;
+    	}
     }
 
     

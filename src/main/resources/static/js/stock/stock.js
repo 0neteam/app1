@@ -9,8 +9,9 @@ $(document).ready(function() {
 	  const editEvent = () => {
 				
 	      if (confirm("정말로 수정하시겠습니까?")) {
-
-	          var _csrf = document.querySelector('input[name="_csrf"]').value;
+			  var _csrf = $("meta[name='_csrf']").attr("content");
+			  var _csrf_header = $("meta[name='_csrf_header']").attr("content");
+	          //var _csrf = document.querySelector('input[name="_csrf"]').value;
 			  console.log("csrf : " + _csrf);
 	          var stocks = []
 	          $(".cb").each( (i, e) => {
@@ -34,7 +35,7 @@ $(document).ready(function() {
 	            $.ajax({
 	                url: '/stock/edit',
 	                method: 'POST',
-	                beforeSend: x => x.setRequestHeader("X-XSRF-TOKEN", _csrf),
+	                beforeSend: x => x.setRequestHeader(_csrf_header, _csrf),
 	                dataType : 'json',
 	                contentType: 'application/json; charset=utf-8',
 	                data: JSON.stringify(params),
@@ -63,7 +64,9 @@ $(document).ready(function() {
 
 		if (confirm("정말로 삭제하시겠습니까?")) {
 
-	          var _csrf = document.querySelector('input[name="_csrf"]').value;
+			  var _csrf = $("meta[name='_csrf']").attr("content");
+			  var _csrf_header = $("meta[name='_csrf_header']").attr("content");
+			  //var _csrf = document.querySelector('input[name="_csrf"]').value;
 	          var stocks = []
 	          $(".cb").each( (i, e) => {
 	              if($(e).prop("checked")) {
@@ -80,7 +83,7 @@ $(document).ready(function() {
 	          $.ajax({
 	              url: '/stock/edit',
 	              method: 'POST',
-	              beforeSend: x => x.setRequestHeader("X-XSRF-TOKEN", _csrf),
+	              beforeSend: x => x.setRequestHeader(_csrf_header, _csrf),
 	              dataType : 'json',
 	              contentType: 'application/json; charset=utf-8',
 	              data: JSON.stringify(params),
