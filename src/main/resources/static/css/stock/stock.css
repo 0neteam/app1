@@ -1,0 +1,34 @@
+@charset "UTF-8";
+
+.container-fluid {
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.section-container {
+    flex: 1;
+    overflow: auto;
+    margin-bottom: 20px;
+}
+   .row.border-bottom > div {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    padding: 8px 0;
+    text-align: center;
+}
+.row.border-bottom > div:first-child {
+    border-left: 1px solid #ddd;
+    border-radius: 10px 0 0 10px; 
+}
+.row.border-bottom > div:last-child {
+    border-radius: 0 10px 10px 0;
+}
+.loading {
+          text-align: center;
+          margin: 10px;
+          display: none;
+}
