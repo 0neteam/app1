@@ -39,12 +39,7 @@
                     <div class="col border p-3">
                         <div>발주 도착지</div>
                     </div>
-                    <div class="col border p-3">
-                        <div>발주 기사</div>
-                    </div>
-                    <div class="col border p-3">
-                        <div>진행상태</div>
-                    </div>
+
                     <div class="col border p-3">
                         <div>발주요청일</div>
                     </div>
@@ -65,17 +60,12 @@
                             <div th:text="${row.orderStatus}"></div> <!-- 발주 상태 추가 -->
                         </div>
                         <div class="col border p-3">
-                            <div th:text="${row.departure}"></div> <!-- 발주 출발지 -->
+                            <div th:text="${row.adr}"></div> <!-- 발주 출발지 -->
                         </div>
                         <div class="col border p-3">
                             <div th:text="${row.dstn}"></div> <!-- 발주 도착지 -->
                         </div>
-                        <div class="col border p-3">
-                            <div th:text="${row.driverName}"></div> <!-- 발주 기사 -->
-                        </div>
-                        <div class="col border p-3">
-                            <div th:text="${row.transpStatus}"></div> <!-- 진행상태 -->
-                        </div>
+
                         <div class="col border p-3">
                             <div th:text="${row.orderReqDate}"></div> <!-- 발주요청일 -->
                         </div>

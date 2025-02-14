@@ -9,7 +9,7 @@ public interface OrderService {
     public String searchOrders(Model model ,String searchTerm);
 
 
-    String processOrderRequest(String selectedRowsJson);
+    String processOrderRequest(String selectedRowsJson ,  String bizNo, String dueDate);
 
 
 }
