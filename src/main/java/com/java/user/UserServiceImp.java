@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import com.java.common.UniFunc;
 import com.java.user.MyUserDTO;
 import com.java.user.RoleDTO;
 import com.java.user.UserDTO;
@@ -32,6 +33,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
 	private final UserDao userDAO;
 	
 	private final PasswordEncoder passwordEncoder;
+	
+	private final UniFunc uniFunc;
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -72,6 +75,11 @@ public class UserServiceImp implements UserService, UserDetailsService {
             	userDTO = userDAO.findALL();  // 전부 해당 안될시 기본값 전체 조회
             	
         }
+        
+        
+        System.out.println("test : " + uniFunc.getUserNo());
+        
+        model.addAttribute("loginedUserNo", uniFunc.getUserNo());
                
 		model.addAttribute("rs", userDTO);
 		
@@ -105,6 +113,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 		System.out.println("//////////////////////user.getPwd()/////////////////////////////");
 		System.out.println("(user.getPwd() : " + user.getPwd());
 		System.out.println("////////////////////////////////////////////////////////////////");
+		
 		if(user.getPwd() == null || user.getPwd().isEmpty()) { // 비밀번호 입력이 없으면 (기존 비밀번호 그대로 유지)
 			
 			System.out.println("/////////////Integer.parseInt(user.getSelectRole()) //////////////////");
@@ -179,6 +188,21 @@ public class UserServiceImp implements UserService, UserDetailsService {
 		System.out.println("userDTO : " + userDTO);
 		
 		return "/user/edit";
+	}
+
+//	@Override
+//	public int authCodeUpdate(UserDTO userDTO) {
+//		// TODO Auto-generated method stub
+//		return userDAO.authCodeUpdate(userDTO);
+//	}
+
+	@Override
+	public int pwdupdate(UserDTO userDTO) {
+		// TODO Auto-generated method stub
+		
+		userDTO.setPwd(passwordEncoder.encode(userDTO.getPwd())); // 패스워드 시큐리티web 암호화		
+		
+		return userDAO.pwdupdate(userDTO);
 	}
 
 	
