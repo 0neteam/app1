@@ -45,7 +45,7 @@ public class UserController {
 	@GetMapping("/signUp")
 	public String userCreate() {
 		
-		return "/user/create";
+		return "user/create";
 	}
 	
     @GetMapping("/signIn")
@@ -208,7 +208,7 @@ public class UserController {
 	private String findPW() {
 		
 		System.out.println("/user/findpw");
-		return "/user/findpw";
+		return "user/findpw";
 	}
 	
 	

@@ -173,7 +173,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 		UserDTO userDTO = userDAO.detailByUserNo(userNo);
 		model.addAttribute("rs", userDTO);
 		
-		return "/user/detail";
+		return "user/detail";
 	}
 
 	@Override
@@ -187,7 +187,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 		System.out.println("///////////////userDTO///////////////");
 		System.out.println("userDTO : " + userDTO);
 		
-		return "/user/edit";
+		return "user/edit";
 	}
 
 //	@Override
