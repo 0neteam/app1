@@ -27,9 +27,9 @@ jobs:
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.HOST_MAIN }}  # main 서버의 호스트
-        username: ${{ secrets.USERNAME }}  # 사용자명
+        username: ${{ secrets.USERNAME_MAIN }}  # 사용자명
         private-key: ${{ secrets.SSH_PRIVATE_KEY_MAIN }}  # PEM 형식의 SSH 비공개 키 사용
-        port: ${{ secrets.PORT }}  # 포트
+        port: ${{ secrets.PORT_MAIN }}  # 포트
         script: |
           bash ~/aws/start.sh  # main 서버에서 실행할 스크립트
 
@@ -38,8 +38,8 @@ jobs:
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.HOST_DEV }}  # dev 서버의 호스트
-        username: ${{ secrets.USERNAME }}  # 사용자명
-        password: ${{ secrets.PASSWORD }}  # 비밀번호
-        port: ${{ secrets.PORT }}  # 포트
+        username: ${{ secrets.USERNAME_DEV }}  # 사용자명
+        password: ${{ secrets.PASSWORD_DEV }}  # 비밀번호
+        port: ${{ secrets.PORT_DEV }}  # 포트
         script: |
           bash ~/aws/start.sh  # dev 서버에서 실행할 스크립트
