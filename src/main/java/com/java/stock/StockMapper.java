@@ -32,9 +32,15 @@ public interface StockMapper {
 			"  ON (oi.itemCode = st.itemCode) " + 
 			"WHERE oi.useYN = 'Y' " + 
 			
-	        "<if test='category1 == 1'>AND oi.orderNo = #{orderNo} </if>" +
-	        "<if test='category1 == 2'>AND st.itemCode = #{itemCode} </if>" +
-	        "<if test='category1 == 3'>AND st.name LIKE concat('%', #{stockName}, '%') </if>" +
+	        "<if test='category1 == 1 and orderNo != null and orderNo != \"\"'> " +
+	        "   AND oi.orderNo = #{orderNo} " +
+	        "</if> " +
+	        "<if test='category1 == 2 and itemCode != null and itemCode != \"\"'> " +
+	        "   AND st.itemCode = #{itemCode} " +
+	        "</if> " +
+	        "<if test='category1 == 3 and stockName != null and stockName != \"\"'> " +
+	        "   AND st.name LIKE concat('%', #{stockName}, '%') " +
+	        "</if> " +
 
 	        "<if test='category2 == 1'>AND inc.status is null </if>" +
 	        "<if test='category2 == 2'>AND inc.status = '운송비정상' </if>" +
@@ -63,8 +69,8 @@ public interface StockMapper {
 	@Select("<script>" +
 	        "SELECT itemCode, name, qty FROM stg_stock " +
 	        "WHERE useYN = 'Y' " +
-	        "<if test='category == 1'>AND itemCode = #{itemCode} </if> " +
-	        "<if test='category == 2'>AND name LIKE CONCAT('%', #{name}, '%') </if>" +
+	        "<if test='category == 1 and itemCode != null and itemCode != \"\"'>AND itemCode = #{itemCode} </if> " +
+	        "<if test='category == 2 and name != null and name != \"\"'>AND name LIKE CONCAT('%', #{name}, '%') </if>" +
 	        "</script>")
 	public List<StockDTO> searchStock(StockDTO stockDTO);
 	
