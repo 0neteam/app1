@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	  $("#stockQty").on("change", function(e) {
+	  $(".stockQty").on("change", function(e) {
 	      if(e.target.value < 0) {
 	          e.target.value = 0;
 	      }
@@ -110,15 +110,12 @@ $(document).ready(function() {
 	    if(e.target.checked) {
 	        $("tbody tr").each((i, v) => {
 	            $(v).find("th").find("input").attr("checked", true);
-				$(v).find("td").eq(1).find("input").prop("readonly", false);
 				$(v).find("td").eq(2).find("input").prop("readonly", false);
+				$(v).find("td").eq(2).find("input").removeClass("form-control-plaintext");
+				$(v).find("td").eq(2).find("input").removeClass("text-center");
 	        });
 	    } else {
-	        $("tbody tr").each((i, v) => {
-	            $(v).find("th").find("input").attr("checked", false);
-				$(v).find("td").eq(1).find("input").prop("readonly", true);
-				$(v).find("td").eq(2).find("input").prop("readonly", true);
-	        });
+			location.reload();
 	    }
 	});
 
@@ -126,8 +123,9 @@ $(document).ready(function() {
 	    if(e.target.checked) {
 	        let index = $(".cb").index(this);
 	        const $tr = $("#data-container tr").eq(index);
-	        $tr.find("td").eq(1).find("input").prop("readonly", false);
 	        $tr.find("td").eq(2).find("input").prop("readonly", false);
+			$tr.find("td").eq(2).find("input").removeClass("form-control-plaintext");
+			$tr.find("td").eq(2).find("input").removeClass("text-center");
 	    } else {
 	        $(this).prop("checked", true);
 	        editEvent();

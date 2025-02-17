@@ -1,9 +1,10 @@
 $(document).ready(function() {
 
-    $("#incomeQty").on("change", function(e) {
-        if(e.target.value < 0) {
-            e.target.value = 0;
-        }
+    $(".incomeQty").on("change", function(e) {
+        let index =  $(".incomeQty").index(this);
+        let orderQty = Number($(".orderQty").eq(index).text());
+        if(e.target.value < 0) e.target.value = 0;
+        if(e.target.value > orderQty) e.target.value = orderQty;        
     });
 
     const editEvent = () => {

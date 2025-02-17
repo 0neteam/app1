@@ -74,8 +74,8 @@
 					        <td th:text="${income.orderNo}"></td>
 					        <td th:text="${income.itemCode}"></td>
 					        <td th:text="${income.stockName}"></td>
-					        <td th:text="${income.orderQty}"></td>
-					        <td><input type="number" name="incomeQty" min="0" th:value="${income.incomeQty}" class="form-control" readonly /></td>
+					        <td th:text="${income.orderQty}" class="orderQty"></td>
+					        <td><input type="number" name="incomeQty" th:value="${income.incomeQty}" class="form-control incomeQty" readonly /></td>
 					        <td th:text="${income.orderDate}"></td>
 					        <td th:text="${income.incomeDate}"></td>
 					        <td><button class="btn btn-info income-btn" th:attr="data-bizNo=${income.bizNo}">거래처</button></td>
