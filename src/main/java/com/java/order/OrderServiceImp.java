@@ -6,14 +6,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.time.LocalDate;
 import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class OrderServiceImp implements OrderService {
 
     private final OrderDAO orderDAO;
+    private final RestClient.Builder builder;
+
 
     // 발주 조회
     @Override
@@ -33,33 +37,34 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     @Transactional
-    public String processOrderRequest(String selectedRowsJson) {
+    public String processOrderRequest(String selectedRowsJson, String bizNo, String dueDate) {
         try {
             // JSON 문자열을 OrderDTO와 OrderItemDTO 객체로 변환
+            LocalDate formattedDueDate = LocalDate.parse(dueDate);
             ObjectMapper objectMapper = new ObjectMapper();
-            List<OrderDTO> selectedOrders = objectMapper.readValue(selectedRowsJson, objectMapper.getTypeFactory().constructCollectionType(List.class, OrderDTO.class));
             List<OrderItemDTO> selectedOrderItems = objectMapper.readValue(selectedRowsJson, objectMapper.getTypeFactory().constructCollectionType(List.class, OrderItemDTO.class));
+            OrderDTO order = OrderDTO.builder().bizNo(Integer.parseInt(bizNo)).orderStatus("발주 대기").dstn("부산").daliDate(formattedDueDate).build();
+            orderDAO.insertOrder(order);
 
-            // 각 주문에 대해 처리
-            for (OrderDTO order : selectedOrders) {
-                // 주문 테이블에 데이터 삽입
-                orderDAO.insertOrder(order);
-            }
 
             // 각 주문 항목에 대해 처리
             for (OrderItemDTO orderItem : selectedOrderItems) {
+                // orderNo와 dueDate는 반복문 밖에서 설정
+                orderItem.setOrderNo(order.getOrderNo());  // 생성된 orderNo를 설정
+                orderItem.setDueDate(formattedDueDate.toString());  // 모든 항목에 동일한 dueDate 설정
+
                 // 주문 항목 테이블에 데이터 삽입
+
+                // 주문 항목 삽입 (주문 항목에 대해 insert 수행)
                 orderDAO.insertOrderItem(orderItem);
             }
 
             // 처리 후 리턴할 페이지 (예: 주문 완료 페이지)
-            return "order/orderInquiry";  // 예시: 성공적인 주문 완료 페이지
+            return "redirect:/order/orderInquiry"; // 예시: 성공적인 주문 완료 페이지
 
         } catch (Exception e) {
             e.printStackTrace();
             return "error";  // 에러 처리 페이지
         }
     }
-
-
 }

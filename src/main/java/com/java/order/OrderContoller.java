@@ -22,16 +22,21 @@ public class OrderContoller {
     }
 
     @PostMapping("/order/orderRequest")
-    public String orderPostRequest(@RequestParam("selectedRows") String selectedRowsJson,  // JSON 문자열 받기
-                                   @RequestParam("_csrf") String csrfToken) {
+    public String orderPostRequest(
+            @RequestParam("selectedRows") String selectedRowsJson,  // JSON 문자열 받기
+            @RequestParam("_csrf") String csrfToken,               // CSRF 토큰 받기
+            @RequestParam String bizNo,                             // bizNo 값 받기
+            @RequestParam String dueDate)                           // dueDate 값 받기
+    {
         try {
             // 서비스 호출하여 주문 처리 후 리턴된 페이지 이름을 받아서 리턴
-            return orderService.processOrderRequest(selectedRowsJson);
+            return orderService.processOrderRequest(selectedRowsJson, bizNo, dueDate);
         } catch (Exception e) {
             e.printStackTrace();
             return "error";  // 에러 처리
         }
     }
+
     // 발주 조회
     @GetMapping("/order/orderInquiry")
     public String orderInquiry(Model model) {

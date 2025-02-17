@@ -1,10 +1,8 @@
 package com.java.order;
 
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+import org.springframework.core.annotation.Order;
 
 
 import java.util.List;
@@ -14,7 +12,7 @@ public interface OrderMapper {
 
 
     // 발주 조회
-    @Select("SELECT a.orderNo , a.orderStatus, a.orderReqDate ,b.transpStatus , b.departure, b.dstn , b.driverName FROM stg_order a JOIN stg_transp b ON a.orderNo = b.orderNo;")
+    @Select("SELECT a.orderNo, a.bizNo, a.orderReqDate, a.dstn, a.orderStatus, b.adr FROM stg_order a JOIN stg_client b ON a.bizNo = b.bizNo ORDER BY a.orderNo DESC")
     public List<OrderDTO> orderInquiry();
     // 발주 조회 검색
     @Select({
@@ -36,13 +34,16 @@ public interface OrderMapper {
     public List<OrderDTO> searchOrders(@Param("searchTerm") String searchTerm);
 
 
-    @Insert("INSERT INTO stg_order (orderNo, bizNo, orderReqDate) " +
-            "VALUES (#{orderNo}, #{bizNo}, #{orderReqDate})")
-    void insertOrder(OrderDTO order);
+    @Insert("INSERT INTO stg_order (bizNo, dstn, orderStatus, daliDate, orderReqDate) " +
+            "VALUES (#{bizNo}, #{dstn}, #{orderStatus}, #{daliDate}, NOW())")
+    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "orderNo", resultType = Integer.class, before = false)
+    void insertOrderAndReturnOrderNo(OrderDTO order);  // orderNo를 OrderDTO 객체에 채우기
 
-    @Insert("INSERT INTO stg_order_item (orderNo, itemCode, qty) " +
-            "VALUES (#{orderNo}, #{itemCode}, #{qty})")
+
+    @Insert("INSERT INTO stg_order_item (orderNo, itemCode, qty, dueDate) " +
+            "VALUES (#{orderNo}, #{itemCode}, #{qty}, #{dueDate})")
     void insertOrderItem(OrderItemDTO orderItem);
+
 
 
 

@@ -2,6 +2,7 @@ package com.java.order;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Setter
@@ -14,14 +15,16 @@ public class OrderDTO {
 
     private int orderId;
     private int orderNo;
-    private Date orderReqDate;
-    private Date orderCancelDate;
+    private String orderReqDate;
+    private String orderCancelDate;
     private String orderStatus;
-    private Date perDate;
+    private String perDate;
     private String dstn;
     private String transpStatus;
     private String departure;
     private String driverName;
-    private String bizNo;
+    private int bizNo;
+    private LocalDate daliDate;
+    private String adr;
 
 }

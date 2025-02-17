@@ -2,6 +2,9 @@ package com.java.order;
 
 import lombok.*;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Setter
 @Getter
 @ToString
@@ -11,8 +14,9 @@ import lombok.*;
 public class OrderItemDTO {
 
     private int orderItemNo;
-    private String orderNo;
+    private int orderNo;
     private String itemCode;
     private int qty;
+    private String dueDate;
 
 }

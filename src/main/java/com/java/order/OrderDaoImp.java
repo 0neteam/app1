@@ -24,7 +24,7 @@ public class OrderDaoImp implements OrderDAO{
     @Override
     public void insertOrder(OrderDTO order) {
         // OrderDTO 객체를 Mapper에 전달하여 DB에 주문 데이터를 삽입
-        orderMapper.insertOrder(order);
+        orderMapper.insertOrderAndReturnOrderNo(order);
     }
 
     @Override
