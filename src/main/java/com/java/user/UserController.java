@@ -137,6 +137,7 @@ public class UserController {
 
 	
 	
+	
 	// 직원추가가입
 	@PostMapping("/signUp")
 	public String signUp(@ModelAttribute UserDTO user) {
@@ -211,26 +212,29 @@ public class UserController {
 		return "user/findpw";
 	}
 	
-	
+	// 3차 진행시 문의 바람
+	private final UserMapper userMapper;
+
 	// 직원 메일 인증코드 Redis 저장
 	@ResponseBody
 	@PostMapping("/user/loginUpdateAuthCode")
 	public Map<String, String> updateAuthCode(@ModelAttribute UserDTO userDTO) { 
 		
-		System.out.println("//////////// Request UpdateAuthCode//////////////////////");
-		
 		Map<String, String> response = new HashMap<>();
+
+		// 추가 ( - email를 이용하여 사용자 정보 가져오기)
+		userDTO = userMapper.findByUser(userDTO.getEmail());
 		
 		String authCode = uniFunc.generateRandomCode(20); // 영숫자 20자리 랜덤 문자열 생성		
 		userDTO.setAuthCode(authCode); // userDTO에 인증코드 추가
 		
-		uniFunc.saveVerificationCode(authCode, 60); // Redis 인증 코드 저장 (60초)
+		uniFunc.saveVerificationCode(userDTO.getAuthCode(), 60); // Redis 인증 코드 저장 (60초)
 		
 		MailDTO mailDTO = MailDTO.builder()
 		.emailFrom("stg.0neteam.co.kr@gmail.com")
 		.emailTo("stg.0neteam.co.kr@gmail.com")
 		.emailSubject("인증코드를 확인해주세요.")
-		.emailBody(uniFunc.generateEmailContent(authCode,"templates/user/emailTemplate.html"))
+		.emailBody(uniFunc.generateEmailContent(userDTO.getAuthCode(), userDTO.getName(),"templates/user/emailTemplate.html"))
 		.emailHtmlEnable(true).build();		
 		boolean status = uniFunc.sendMail(mailDTO);
 		

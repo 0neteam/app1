@@ -1,23 +1,31 @@
 package com.java.order;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.java.biz.BizApiKeyDTO;
+
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 @RequiredArgsConstructor
 @Service
 public class OrderServiceImp implements OrderService {
 
     private final OrderDAO orderDAO;
-    private final RestClient.Builder builder;
-
 
     // 발주 조회
     @Override
@@ -67,4 +75,31 @@ public class OrderServiceImp implements OrderService {
             return "error";  // 에러 처리 페이지
         }
     }
+
+    public OrderResDTO findByBiz() {
+        List<OrderBizDTO> bizs = orderDAO.findByBiz();
+        boolean status = (bizs == null) ? false : true;
+        String msg = (bizs == null) ? "거래처 정보가 없습니다." : null;
+        return OrderResDTO.builder().status(status).result(bizs).msg(msg).build();
+    }
+
+    public OrderApiDTO findByItems(int bizNo) {
+        BizApiKeyDTO bizApiKeyDTO = orderDAO.findByBizApi(bizNo);
+        if(bizApiKeyDTO != null) {
+            try {
+
+                ResponseEntity<OrderApiDTO> response = RestClient.create().post()
+                    .uri("http://localhost:8081" + bizApiKeyDTO.getUrl())
+                    .header("Authorization", bizApiKeyDTO.getKey())
+                    .retrieve()
+                    .toEntity(OrderApiDTO.class);
+
+                return response.getBody();
+            } catch (RestClientException e) {
+                e.printStackTrace();
+            }
+        }
+        return OrderApiDTO.builder().status(false).build();
+    }
+
 }

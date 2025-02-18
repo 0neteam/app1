@@ -1,5 +1,7 @@
 package com.java.order;
 
+import java.util.Map;
+
 import org.springframework.ui.Model;
 
 public interface OrderService {
@@ -11,5 +13,7 @@ public interface OrderService {
 
     String processOrderRequest(String selectedRowsJson ,  String bizNo, String dueDate);
 
+    public OrderResDTO findByBiz();
+    public OrderApiDTO findByItems(int bizNo);
 
 }

@@ -4,6 +4,7 @@ package com.java.order;
 import org.apache.ibatis.annotations.*;
 import org.springframework.core.annotation.Order;
 
+import com.java.biz.BizApiKeyDTO;
 
 import java.util.List;
 
@@ -44,7 +45,10 @@ public interface OrderMapper {
             "VALUES (#{orderNo}, #{itemCode}, #{qty}, #{dueDate})")
     void insertOrderItem(OrderItemDTO orderItem);
 
+    @Select("select bizNo, bizName from stg_client where bizType = '제조'")
+    public List<OrderBizDTO> findByBiz();
 
-
+    @Select("select * from stg_api_key where type = 'list' and useYn = 'Y' and bizNo = #{bizNo}")
+    public BizApiKeyDTO findByBizApi(int bizNo);
 
 }

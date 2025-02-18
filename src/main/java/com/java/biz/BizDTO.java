@@ -20,12 +20,13 @@ import lombok.ToString;
 public class BizDTO {
 
     private int bizNo;
-    private String bizNum;
     private String bizName;
     private String bizTel;
     private String bizFax;
     private String email;
+    private String pwd;
     private String ceo;
+    private String bizNum;
     private String bizType;
     private String zipCode;
     private String adr;
@@ -67,6 +68,9 @@ public class BizDTO {
                 if("email".equals(key)) {
                     bizDTO.setEmail(paramMap.get(key));
                 }
+                if("pwd".equals(key)) {
+                    bizDTO.setPwd(paramMap.get(key));
+                }
 
                 
                 if("url1".equals(key)) {
@@ -103,6 +107,9 @@ public class BizDTO {
                 if("email".equals(key)) {
                     bizDTO.setEmail(paramMap.get(key));
                 }
+                if("pwd".equals(key)) {
+                    bizDTO.setPwd(paramMap.get(key));
+                }
                 if("ceo".equals(key)) {
                     bizDTO.setCeo(paramMap.get(key));
                 }
@@ -120,24 +127,24 @@ public class BizDTO {
                 }
 
                 // API & KEY
-                if("orderUrl".equals(key)) {
-                    orderUrl = paramMap.get(key);
-                }
-                if("productUrl".equals(key)) {
-                    productUrl = paramMap.get(key);
-                }
-                if("orderKey".equals(key)) {
-                    orderKey = paramMap.get(key);
-                }
-                if("productKey".equals(key)) {
-                    productKey = paramMap.get(key);
-                }
+                // if("orderUrl".equals(key)) {
+                //     orderUrl = paramMap.get(key);
+                // }
+                // if("productUrl".equals(key)) {
+                //     productUrl = paramMap.get(key);
+                // }
+                // if("orderKey".equals(key)) {
+                //     orderKey = paramMap.get(key);
+                // }
+                // if("productKey".equals(key)) {
+                //     productKey = paramMap.get(key);
+                // }
             }
 
-            apiKeys.add(BizApiKeyDTO.builder().bizNo(bizDTO.getBizNo()).type("order").url(orderUrl).key(orderKey).build());
-            apiKeys.add(BizApiKeyDTO.builder().bizNo(bizDTO.getBizNo()).type("list").url(productUrl).key(productKey).build());
+            // apiKeys.add(BizApiKeyDTO.builder().bizNo(bizDTO.getBizNo()).type("order").url(orderUrl).key(orderKey).build());
+            // apiKeys.add(BizApiKeyDTO.builder().bizNo(bizDTO.getBizNo()).type("list").url(productUrl).key(productKey).build());
         }
-        bizDTO.setApiKeys(apiKeys);
+        //bizDTO.setApiKeys(apiKeys);
         return bizDTO;
     }
 }

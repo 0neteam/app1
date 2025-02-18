@@ -4,12 +4,16 @@
 
     <div class="container px-4 px-lg-5">
         <span>
-            <a class="navbar-brand" href="/" style="display: flex;">
+            <a class="navbar-brand" href="/" style="display: flex;" sec:authorize="!hasRole('ROLE_ADMIN')" >
 <!--                 <img src="https://avatars.githubusercontent.com/u/20333260?v=4" style="width: 42px;"> -->
                 <b style="font-size: 28px; color:#10ab8c; text-shadow: -1px 0 #0D0D0D, 0 1px #0D0D0D, 1px 0 #0D0D0D, 0 -1px #0D0D0D; margin-right: -8px">ONE</b>
                 <b style="font-size: 28px; color:#F2D22E; text-shadow: -1px 0 #0D0D0D, 0 1px #0D0D0D, 1px 0 #0D0D0D, 0 -1px #0D0D0D;">TEAM</b>
             </a>
-            <p sec:authorize="hasRole('ROLE_ADMIN')">관리자모드</p>
+            <a class="navbar-brand" href="/" style="display: flex;" sec:authorize="hasRole('ROLE_ADMIN')" >
+<!--                 <img src="https://avatars.githubusercontent.com/u/20333260?v=4" style="width: 42px;"> -->
+                <b style="font-size: 28px; color:#F2D22E; text-shadow: -1px 0 #0D0D0D, 0 1px #0D0D0D, 1px 0 #0D0D0D, 0 -1px #0D0D0D; margin-right: -8px">ONE</b>
+                <b style="font-size: 28px; color:#10ab8c; text-shadow: -1px 0 #0D0D0D, 0 1px #0D0D0D, 1px 0 #0D0D0D, 0 -1px #0D0D0D;">TEAM</b>
+            </a>
         </span>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -27,15 +31,8 @@
 						<li><a class="dropdown-item" href="/signUp">직원</a></li>
 					</ul>
 				</li>
-                <li class="nav-item dropdown" sec:authorize="!isAuthenticated()">
-					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						로그인
-					</a>
-					<ul class="dropdown-menu">
-						<li><a class="dropdown-item" href="/signIn">거래처</a></li>
-						<li><hr class="dropdown-divider"></li>
-						<li><a class="dropdown-item" href="/signIn">직원</a></li>
-					</ul>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+					<a class="nav-link" href="/signIn">로그인</a>
 				</li>
 
 				<li class="nav-item dropdown" sec:authorize="isAuthenticated()">
@@ -43,7 +40,7 @@
 						내 정보
 					</a>
 					<ul class="dropdown-menu">
-						<li><a class="dropdown-item" href="#!">마이페이지</a></li>
+						<li><a class="dropdown-item" href="/user/detail" sec:authorize="!hasRole('ROLE_BIZ')">마이페이지</a></li>
 						<li><a class="dropdown-item" href="/logout">로그아웃</a></li>
 					</ul>
 				</li>

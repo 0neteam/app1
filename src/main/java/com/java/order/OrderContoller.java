@@ -17,7 +17,8 @@ public class OrderContoller {
     private final OrderService orderService;
 
     @GetMapping("/order/orderRequest")
-    public String orderRequest() {
+    public String orderRequest(Model model) {
+        model.addAttribute("bizs", orderService.findByBiz().getResult());
        return "order/orderRequest";
     }
 
@@ -72,6 +73,18 @@ public class OrderContoller {
     @GetMapping("/order/deliveryStatus")
     public String deliveryStatus() {
         return "order/deliveryStatus";
+    }
+
+    @ResponseBody
+    @PostMapping("/order/findByBiz")
+    public OrderResDTO findByBiz() {
+        return orderService.findByBiz();
+    }
+
+    @ResponseBody
+    @PostMapping("/order/list")
+    public OrderApiDTO findByItems(@RequestParam("bizNo") Integer bizNo) {
+        return orderService.findByItems(bizNo);
     }
 
 }

@@ -3,6 +3,8 @@ package com.java.order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import com.java.biz.BizApiKeyDTO;
+
 import java.util.List;
 @RequiredArgsConstructor
 @Repository
@@ -31,6 +33,14 @@ public class OrderDaoImp implements OrderDAO{
     public void insertOrderItem(OrderItemDTO orderItem) {
         // OrderItemDTO 객체를 Mapper에 전달하여 DB에 주문 항목 데이터를 삽입
         orderMapper.insertOrderItem(orderItem);
+    }
+
+
+    public List<OrderBizDTO> findByBiz() {
+        return orderMapper.findByBiz();
+    }
+    public BizApiKeyDTO findByBizApi(int bizNo) {
+        return orderMapper.findByBizApi(bizNo);
     }
 
 }
