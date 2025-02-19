@@ -1,8 +1,8 @@
 package com.java.order;
 
-import lombok.*;
-
 import java.time.LocalDate;
+
+import lombok.*;
 
 @Setter
 @Getter
@@ -10,15 +10,12 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderDTO {
+public class QuoOrderDTO {
 
     private int orderNo;
     private int bizNo;
-    private String orderStatus;
     private String dstn;
-    private LocalDate orderReqDate;
-    private LocalDate orderCancelDate;
-    private LocalDate perDate;
     private LocalDate deliDate;
-
+    private LocalDate orderDate;
+    
 }

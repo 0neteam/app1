@@ -13,7 +13,7 @@ public interface OrderMapper {
 
 
     // 발주 조회
-    @Select("SELECT a.orderNo, a.bizNo, a.orderReqDate, a.dstn, a.orderStatus, b.adr FROM stg_order a JOIN stg_client b ON a.bizNo = b.bizNo ORDER BY a.orderNo DESC")
+    @Select("SELECT a.orderNo, a.bizNo, a.orderReqDate, a.dstn, a.orderStatus FROM stg_order a JOIN stg_client b ON a.bizNo = b.bizNo ORDER BY a.orderNo DESC")
     public List<OrderDTO> orderInquiry();
     // 발주 조회 검색
     @Select({
@@ -35,20 +35,23 @@ public interface OrderMapper {
     public List<OrderDTO> searchOrders(@Param("searchTerm") String searchTerm);
 
 
-    @Insert("INSERT INTO stg_order (bizNo, dstn, orderStatus, daliDate, orderReqDate) " +
-            "VALUES (#{bizNo}, #{dstn}, #{orderStatus}, #{daliDate}, NOW())")
+    @Insert("INSERT INTO stg_order (bizNo, dstn, orderStatus, deliDate, orderReqDate) " +
+            "VALUES (#{bizNo}, #{dstn}, #{orderStatus}, #{deliDate}, NOW())")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "orderNo", resultType = Integer.class, before = false)
-    void insertOrderAndReturnOrderNo(OrderDTO order);  // orderNo를 OrderDTO 객체에 채우기
+    int insertOrderAndReturnOrderNo(OrderDTO order);  // orderNo를 OrderDTO 객체에 채우기
 
 
-    @Insert("INSERT INTO stg_order_item (orderNo, itemCode, qty, dueDate) " +
-            "VALUES (#{orderNo}, #{itemCode}, #{qty}, #{dueDate})")
-    void insertOrderItem(OrderItemDTO orderItem);
+    @Insert("INSERT INTO stg_order_item (orderNo, itemCode, qty) " +
+            "VALUES (#{orderNo}, #{itemCode}, #{qty})")
+    int insertOrderItem(OrderItemDTO orderItem);
 
-    @Select("select bizNo, bizName from stg_client where bizType = '제조'")
+    @Select("select bizNo, bizName from stg_client where useYn = 'Y' and bizType = '제조'")
     public List<OrderBizDTO> findByBiz();
 
-    @Select("select * from stg_api_key where type = 'list' and useYn = 'Y' and bizNo = #{bizNo}")
-    public BizApiKeyDTO findByBizApi(int bizNo);
+    @Select("select * from stg_api_key where type = #{type} and useYn = 'Y' and bizNo = #{bizNo}")
+    public BizApiKeyDTO findByBizApi(BizApiKeyDTO bizApiKeyDTO);
+
+    @Select("select * from stg_order where orderNo = #{orderNo}")
+    public OrderDTO findByOrderNo(int orderNo);
 
 }

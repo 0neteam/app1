@@ -5,69 +5,76 @@
       layout:decorate="~{layouts/default}">
 
 <main layout:fragment="content" class="container my-2" style="min-height: 50vh;">
-  <style>
-    /* row 내에 있는 div에게 보더를 추가. */
-    .row > div {
-      border: 1px solid black;
-    }
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script src="/js/order/orderRequest.js"></script>
 
-    /* 선택된 데이터 컨테이너에 줄을 추가 (새로 추가되는 항목에만 적용) */
-    #selectedDataContainer .row {
-      border: 1px solid black; /* 데이터가 추가되는 행에 선을 추가 */
-      margin-bottom: 5px; /* 각 항목 간 간격 추가 */
-    }
+  <div class="container-fluid">
+    <div class="container section-container p-4 border rounded shadow-sm">
 
-    /* 좌측 본문 */
-    .article {
-      display: inline-block;
-    }
-
-    /* 좌측 사이드바 */
-    .side {
-      float: left;
-      position: sticky;
-      top: 50px;
-      margin: 10px;
-    }
-  </style>
-
-  <form th:action="@{/order/orderRequest}" method="POST">
-
-    <div class="container text-center">
-
-      <div class="d-flex my-2">
+      <div class="d-flex justify-content-between my-2">
+        <!-- 납입일자 선택 (달력) -->
         <div class="d-flex align-items-center">
           <label for="deliDate" class="form-label text-start" style="min-width: 60px; margin-bottom: 0;">납기일자</label>
           <input type="date" class="form-control" name="deliDate" id="deliDate"/>
         </div>
-        <div class="ms-auto">
-          <button type="button" class="btn btn-primary me-2">발주요청</button> <!-- 발주요청 버튼 -->
-          <button type="button" class="btn btn-danger">취소</button> <!-- 취소 버튼 -->
+        <!-- 도착지 주소 검색 -->
+        <div class="d-flex align-items-center">
+          <label for="dstnD" class="form-label text-start mx-2" style="min-width: 60px; margin-bottom: 0;">도착 주소</label>
+          <button type="button" class="btn btn-secondary" style="min-width: 90px;" id="addrSearch">주소검색</button>
+          <input type="text" class="form-control mx-1" name="dstn" id="dstn" placeholder="주소 검색 하세요" required readonly/>
+          <input type="text" class="form-control" name="dstnD" id="dstnD" placeholder="상세 주소 입력" required readonly/>
+        </div>
+      </div>
+      <div class="text-center d-flex justify-content-between my-2">
+          <!-- 거래처 선택과 품목조회 버튼을 왼쪽 정렬 -->
+          <div class="d-flex justify-content-start">
+            <select class="form-select" style="width: 150px;" name="bizNo" id="bizNo">
+              <option value="">거래처 선택</option>
+              <option th:each="biz : ${bizs}" th:value="${biz.bizNo}" th:text="${biz.bizName}"></option>
+            </select>
+            <button type="button" class="btn btn-secondary ms-2" id="viewProduct">품목조회</button>
+          </div>
+        <!-- 발주요청 및 취소 버튼 -->
+        <div class="d-flex align-items-center gap-2">
+          <form th:action="@{/}" method="post">
+            <button type="submit" class="btn btn-secondary">발주요청</button>
+          </form>
+          <button type="button" class="btn btn-secondary">취소</button>
         </div>
       </div>
 
-      <!-- 거래처 선택과 품목조회 버튼을 왼쪽 정렬 -->
-      <div class="d-flex justify-content-start my-2">
-        <select class="form-select" aria-label="거래처 선택" style="width: 150px;" name="bizNo" id="bizNo">
-          <option value="">거래처 선택</option>
-          <option th:each="biz : ${bizs}" th:value="${biz.bizNo}" th:text="${biz.bizName}"></option>
-        </select>
-        <button type="button" class="btn btn-light ms-2" id="viewProduct">품목조회</button>
-      </div>
-
-      <!-- 순번, 품번, 품목코드, 품목명, 수량, 비고 항목 제목 추가 -->
-      <div class="row my-3">
-        <div class="col-sm-1">순번</div> <!-- 순번 칸 추가 -->
-        <div class="col-sm-2">품번</div>
-        <div class="col-sm-2">품목코드</div>
-        <div class="col-sm-3">품목명</div>
-        <div class="col-sm-1">수량</div> <!-- 수량 칸 크기 수정 -->
-        <div class="col-sm-2">비고</div> <!-- 비고 칸을 수량 옆에 배치 -->
+      <div class="table-responsive">
+        <table class="table table-bordered text-center">
+            <thead class="table-light">
+              <tr>
+                <th>품목코드</th>
+                <th>품목명</th>
+                <th>수량</th>
+                <th>삭제</th>
+              </tr>
+            </thead>
+            <tbody id="data-container">
+              <tr>
+                <td colspan="5">선택한 품목 데이터 없음</td>
+              </tr>
+          </tbody>
+        </table>
       </div>
 
     </div>
-    </div>
-  </form>
+    <!-- 순번, 품번, 품목코드, 품목명, 수량, 비고 항목 제목 추가 -->
+    <!-- <form th:action="@{/order/orderRequest}" method="POST">
+        <div class="row my-3">
+          <div class="col-sm-1">순번</div>
+          <div class="col-sm-2">품번</div>
+          <div class="col-sm-2">품목코드</div>
+          <div class="col-sm-3">품목명</div>
+          <div class="col-sm-1">수량</div>
+          <div class="col-sm-2">비고</div>
+        </div>
+    </form> -->
+    
+  </div>
 
   <!-- 품목조회버튼과 연결되는 모달창 -->
   <div class="modal" id="modalViewProduct">
@@ -77,18 +84,23 @@
           <h1>거래처 명</h1>
         </div>
         <div class="modal-body">
-            <div class="container text-center">
-              <!-- 기존 헤더 -->
-              <div class="row">
-                <div class="col-sm-1">선택</div>
-                <div class="col-sm-2">품목코드</div>
-                <div class="col-sm-9">품목명</div>
-              </div>
-
-              <div id="items"></div>
-
-            </div>
-          </form>
+          <div class="table-responsive">
+            <table class="table table-bordered text-center">
+                <thead class="table-light">
+                  <tr>
+                    <th><input type="checkbox" name="cb_all" id="cb_all"/></th>
+                    <th>순번</th>
+                    <th>품목코드</th>
+                    <th>품목명</th>
+                  </tr>
+                </thead>
+                <tbody id="items">
+                  <tr>
+                    <td colspan="5">선택한 품목 데이터 없음</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div> 
         </div>
         <div class="modal-footer">
           <!-- 선택 확정과 취소 버튼 추가 -->
@@ -98,227 +110,5 @@
       </div>
     </div>
   </div>
-
-
-  <script>
-    $( () => {
-      const nowDateEvent = () => {
-        const d = new Date();
-
-        // 년, 월, 일 가져오기
-        const year = d.getFullYear(); // 4자리 년도
-        const month = String(d.getMonth() + 1).padStart(2, '0'); // 월 (0부터 시작하므로 1을 더해줘야 실제 월이 나옴)
-        const day = String(d.getDate()).padStart(2, '0'); // 일
-        const now = `${year}-${month}-${day}`;
-
-        // 년, 월, 일 형식으로 출력
-        $("#deliDate").val(now);
-        $("#deliDate").attr("min", now);
-      }
-      // 납기 날짜 초기화
-      nowDateEvent();
-
-      const checkBoxEvent = () => {
-        $("input[type='checkbox']").each((i, e) => {
-          console.log(i, e.checked);
-        })
-      }
-
-      $("#selectConfirmBtn").on("click", () => {
-        checkBoxEvent();
-      });
-
-      $("#bizNo").on("change", (e) => {
-        console.log(e.target.value);
-      });
-
-      $("#viewProduct").on("click", ()=> {
-        let bizNo = $("#bizNo").val();
-        if(bizNo === "") return;
-
-        var _csrf = $('input[name="_csrf"]').val();
-        var params = {_csrf, bizNo}
-
-        $.ajax({
-            url: '/order/list',
-            method: 'POST',
-            data: params
-        }).done(res => {
-            if (res.status) {
-              $("#items").empty();
-              res.data.forEach((v, i) => {
-                const html = `<div class="row select-row" data-row-id="1">
-                                <div class="col-sm-1">
-                                  <input type="checkbox" class="select-checkbox" />
-                                </div>
-                                <div class="col-sm-2">${v.itemCode}</div>
-                                <div class="col-sm-9">${v.name}</div>
-                              </div>`;
-                $("#items").append(html);
-              });
-              $("#modalViewProduct").modal('show');
-            } else {
-                alert("선택한 거래처에서 오류가 발생 했습니다.");
-            }
-        }).fail(error => {
-            console.log(error);
-        });
-      });
-    } );
-
-    // 선택된 데이터가 출력될 영역
-    const selectConfirmBtn = document.getElementById('selectConfirmBtn');
-
-    selectConfirmBtn.addEventListener('click', function() {
-      const selectedRows = [];
-
-      // 체크된 체크박스가 있는 행 찾기
-      const rows = document.querySelectorAll('.select-row');
-      rows.forEach(row => {
-        const checkbox = row.querySelector('.select-checkbox');
-        if (checkbox.checked) {
-          const productNumber = row.querySelectorAll('input')[1].value;  // 품번
-          const itemCode = row.querySelectorAll('input')[2].value;      // 품목코드
-          const itemName = row.querySelectorAll('input')[3].value;      // 품목명
-          const quantity = row.querySelectorAll('input')[4].value;      // 수량
-          const remarks = row.querySelectorAll('input')[5].value;       // 비고
-
-          // 선택된 행의 데이터 저장
-          selectedRows.push({
-            productNumber,
-            itemCode,
-            itemName,
-            quantity,
-            remarks
-          });
-        }
-      });
-
-      // 선택된 데이터를 HTML로 그려주는 작업
-      const selectedDataContainer = document.getElementById('selectedDataContainer');
-      selectedDataContainer.innerHTML = ''; // 기존 내용 초기화
-
-      // 선택된 데이터를 하나씩 추가
-      selectedRows.forEach((rowData, index) => {
-        const rowDiv = document.createElement('div');
-        rowDiv.classList.add('row'); // 부트스트랩의 row 클래스를 사용해 줄 맞춤
-
-        // 새로운 데이터 추가 (기존 header와 맞추어 디자인)
-        rowDiv.innerHTML = `
-        <div class="col-sm-1" style="text-align: center;">${index + 1}</div> <!-- 순번 -->
-        <div class="col-sm-2" style="text-align: center;">${rowData.productNumber}</div> <!-- 품번 -->
-        <div class="col-sm-2" style="text-align: center;">${rowData.itemCode}</div> <!-- 품목코드 -->
-        <div class="col-sm-3" style="text-align: center;">${rowData.itemName}</div> <!-- 품목명 -->
-        <div class="col-sm-1" data-id="${index + 1}" style="text-align: center;">${rowData.quantity}</div> <!-- 수량 -->
-        <div class="col-sm-2" style="text-align: center;">${rowData.remarks}</div> <!-- 비고 -->
-      `;
-        selectedDataContainer.appendChild(rowDiv);
-      });
-
-      // selectedDataContainer의 모든 .row에 대해서만 보더 제거
-      const rowsInContainer = selectedDataContainer.querySelectorAll('.row');
-      rowsInContainer.forEach(row => {
-        row.style.border = 'none'; // row에 보더 제거
-      });
-    });
-
-    // 모든 row 클릭 시 해당 행의 체크박스를 토글
-    const rows = document.querySelectorAll('.select-row');
-    rows.forEach(row => {
-      row.addEventListener('click', function () {
-        const checkbox = row.querySelector('.select-checkbox');
-        checkbox.checked = !checkbox.checked; // 체크박스 상태 토글
-      });
-    });
-
-
-    // 발주요청 버튼 클릭 이벤트 추가
-    const orderRequestBtn = document.querySelector('.btn.btn-primary');
-
-    orderRequestBtn.addEventListener('click', function() {
-      const selectedRows = [];
-      let bizNo = "";  // bizNo 변수를 함수 내에서 정의
-
-      // 선택된 데이터가 담긴 영역을 가져옴
-      const rowsInContainer = document.querySelectorAll('#selectedDataContainer .row');
-      rowsInContainer.forEach(row => {
-        const index = row.querySelector('.col-sm-1').textContent;  // 순번 (1, 2, 3 등)
-
-        // 품목코드 -> itemCode
-        const itemCode = row.querySelectorAll('.col-sm-2')[1].textContent;  // 품목코드
-
-        // bizNo = itemCode로 설정
-        bizNo = itemCode;  // itemCode를 bizNo로 사용
-
-        // 수량 -> qty (data-id 속성 사용하여 해당 행의 수량 input 값 가져오기)
-        const quantityInput = row.querySelector('[data-id="'+index+'"]');
-        const quantity = quantityInput ? quantityInput.textContent : 0;  // 수량 값 가져오기
-
-        // OrderItemDTO 객체 생성
-        const orderItemDTO = {
-          itemCode: itemCode,  // 품목 코드
-          qty: quantity        // 수량
-        };
-
-        selectedRows.push(orderItemDTO);
-      });
-
-      // 선택된 데이터가 없으면 알림창을 띄움
-      if (selectedRows.length === 0) {
-        alert('데이터가 없습니다.');
-        return; // 데이터가 없으면 더 이상 진행하지 않음
-      }
-
-      // dueDate 값 가져오기
-      const dueDate = document.getElementById('dueDate').value;
-
-      // dueDate가 빈 값이면 알림창을 띄움
-      if (!dueDate) {
-        alert('발주 최종 일자를 입력해주세요.');
-        return; // 빈 값이면 더 이상 진행하지 않음
-      }
-
-      // formattedDueDate는 input[type="date"]에서 바로 yyyy-MM-dd 형식이므로 변환 불필요
-      const formattedDueDate = dueDate;  // 그대로 사용
-
-      // 선택된 데이터에 dueDate 추가
-      selectedRows.forEach(item => {
-        item.dueDate = formattedDueDate; // formattedDueDate 추가
-      });
-
-      console.log('선택된 데이터:', selectedRows);
-      var _csrf = document.querySelector('input[name="_csrf"]').value;
-      var params = {
-        bizNo: bizNo,          // bizNo 값 추가
-        dueDate: formattedDueDate,      // formattedDueDate 값 추가
-        selectedRows: JSON.stringify(selectedRows),  // selectedRows 배열을 JSON 문자열로 변환하여 전송
-        _csrf: _csrf
-      };
-
-      console.log(params);
-
-      // AJAX 요청으로 데이터 전송
-      $.ajax({
-        url: '/order/orderRequest',
-        method: 'POST',
-        data: params
-      }).done(data => {
-        console.log(data);
-        // 추가적인 작업이 필요하다면 여기에 추가
-        window.location.href = "/order/orderInquiry";  // 페이지 이동
-      }).fail(error => {
-        console.log(error);
-      });
-    });
-
-
-
-
-  </script>
-
-
-
-
-
 </main>
 </html>

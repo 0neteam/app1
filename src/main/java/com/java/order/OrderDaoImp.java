@@ -24,23 +24,27 @@ public class OrderDaoImp implements OrderDAO{
 
 
     @Override
-    public void insertOrder(OrderDTO order) {
+    public int insertOrder(OrderDTO order) {
         // OrderDTO 객체를 Mapper에 전달하여 DB에 주문 데이터를 삽입
-        orderMapper.insertOrderAndReturnOrderNo(order);
+        return orderMapper.insertOrderAndReturnOrderNo(order);
     }
 
     @Override
-    public void insertOrderItem(OrderItemDTO orderItem) {
+    public int insertOrderItem(OrderItemDTO orderItem) {
         // OrderItemDTO 객체를 Mapper에 전달하여 DB에 주문 항목 데이터를 삽입
-        orderMapper.insertOrderItem(orderItem);
+        return orderMapper.insertOrderItem(orderItem);
     }
 
 
     public List<OrderBizDTO> findByBiz() {
         return orderMapper.findByBiz();
     }
-    public BizApiKeyDTO findByBizApi(int bizNo) {
-        return orderMapper.findByBizApi(bizNo);
+    public BizApiKeyDTO findByBizApi(BizApiKeyDTO bizApiKeyDTO) {
+        return orderMapper.findByBizApi(bizApiKeyDTO);
+    }
+
+    public OrderDTO findByOrderNo(int orderNo) {
+        return orderMapper.findByOrderNo(orderNo);
     }
 
 }

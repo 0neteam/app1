@@ -15,5 +15,6 @@ public interface OrderService {
 
     public OrderResDTO findByBiz();
     public OrderApiDTO findByItems(int bizNo);
+    public OrderResDTO orderCreate(OrderReqDTO orderReqDTO);
 
 }

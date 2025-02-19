@@ -53,7 +53,7 @@ public class SecurityConf {
         
         http.authorizeHttpRequests(req -> {
             req.requestMatchers("/", "/signUp").permitAll(); // 메인 페이지 및 회원가입 페이지는 인증 없이 접근 가능
-            req.requestMatchers("/css/**", "/js/**").permitAll();
+            req.requestMatchers("/css/**", "/js/**", "/img/**").permitAll();
             req.requestMatchers("/webjars/**").permitAll(); // 정적 리소스(webjars) 접근 허용
             
             req.requestMatchers("/user/create/checkemail", "/user/findpw", "/user/loginUpdateAuthCode", "/user/loginUpdateAuthCodeCheck", "/user/loginpwdupdate").permitAll();   

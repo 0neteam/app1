@@ -62,11 +62,21 @@
             <div class="row form-group">
                 <div class="col-sm-2">발주 URL</div>
                 <div class="col-sm-4">
-                    <input type="text" name="url1" id="url1" th:value="${bizResult.apiKeys[0].url}" class="form-control" required readonly>
+                    <th:block th:if="${bizResult.apiKeys.size() > 0}">
+                        <input type="text" name="url1" id="url1" th:value="${bizResult.apiKeys[0].url}" class="form-control" required readonly>
+                    </th:block>
+                    <th:block th:unless="${bizResult.apiKeys.size() > 0}">
+                        <input type="text" name="url1" id="url1" class="form-control" />
+                    </th:block>
                 </div>
                 <div class="col-sm-2">품목 URL</div>
                 <div class="col-sm-4">
-                    <input type="text" name="url2" id="url2" th:value="${bizResult.apiKeys[1].url}" class="form-control" required readonly>
+                    <th:block th:if="${bizResult.apiKeys.size() > 0}">
+                        <input type="text" name="url2" id="url2" th:value="${bizResult.apiKeys[1].url}" class="form-control" required readonly>
+                    </th:block>
+                    <th:block th:unless="${bizResult.apiKeys.size() > 0}">
+                        <input type="text" name="url2" id="url2" class="form-control" />
+                    </th:block>
                 </div>
             </div>
             <div class="row form-group">

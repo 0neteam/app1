@@ -87,4 +87,10 @@ public class OrderContoller {
         return orderService.findByItems(bizNo);
     }
 
+    @ResponseBody
+    @PostMapping("/order/create")
+    public OrderResDTO orderCreate(@RequestBody OrderReqDTO orderReqDTO) {
+        return orderService.orderCreate(orderReqDTO);
+    }
+
 }

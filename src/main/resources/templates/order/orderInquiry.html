@@ -34,9 +34,6 @@
                         <div>발주 상태</div> <!-- 새로 추가된 발주 상태 컬럼 -->
                     </div>
                     <div class="col border p-3">
-                        <div>발주 출발지</div>
-                    </div>
-                    <div class="col border p-3">
                         <div>발주 도착지</div>
                     </div>
 
@@ -44,7 +41,7 @@
                         <div>발주요청일</div>
                     </div>
                     <div class="col border p-3">
-
+                        <div>견적서</div>
                     </div>
                 </div>
 
@@ -60,9 +57,6 @@
                             <div th:text="${row.orderStatus}"></div> <!-- 발주 상태 추가 -->
                         </div>
                         <div class="col border p-3">
-                            <div th:text="${row.adr}"></div> <!-- 발주 출발지 -->
-                        </div>
-                        <div class="col border p-3">
                             <div th:text="${row.dstn}"></div> <!-- 발주 도착지 -->
                         </div>
 
@@ -70,10 +64,11 @@
                             <div th:text="${row.orderReqDate}"></div> <!-- 발주요청일 -->
                         </div>
                         <div class="col border p-3">
+                            <a th:href="@{http://localhost:8002/quoChk/{orderNo}/{key}(orderNo=${row.orderNo},key=${key})}" target="_blank" class="btn btn-primary">견적서</a>
                             <!-- 견적서 모달 버튼 -->
-                            <button type="button" class="btn btn-primary modal-button" data-bs-toggle="modal" data-bs-target="#modalViewEstimate">
+                            <!-- <button type="button" class="btn btn-primary modal-button" data-bs-toggle="modal" data-bs-target="#modalViewEstimate">
                                 견적서
-                            </button>
+                            </button> -->
                         </div>
                     </div>
                 </th:block>
