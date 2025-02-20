@@ -13,6 +13,9 @@ public interface StockDao {
 	public int editStock(StockDTO stockDTO);
 	public int deleteStock(int no);
 
-	
+	public IncomeDTO findByItem(int incomeNo);
+	public StockDTO findByBizAndItem(IncomeDTO incomeDTO);
+	public int createStock(StockDTO stockDTO);
+	public int updateStock(StockDTO stockDTO);
 	
 }

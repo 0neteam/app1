@@ -15,21 +15,21 @@ public interface StockMapper {
 	@Select("<script>" +
             "SELECT IFNULL(inc.no, 0) as incomeNo, " + 
             "		oi.orderNo, " + 
-			"       st.itemCode, " + 
-			"		st.name AS stockName," + 
+			"       oi.itemCode, " + 
+			"		oi.itemName AS stockName," + 
 			"		oi.qty AS orderQty, " + 
-			"		IFNULL(inc.qty, 0) AS incomeQty, " +
+			"		inc.qty AS incomeQty, " +
 			"		o.orderReqDate AS orderDate, " + 
 			"		IFNULL(inc.incomeDate, '0000-00-00 00:00:00') AS incomeDate, " + 
 			"		o.bizNo," +
-			"		IFNULL(inc.status, '미입고') AS status " + 
-			"FROM stg_order_item oi " + 
-			"LEFT OUTER JOIN stg_incoming inc " + 
+			"		inc.status AS status " + 
+			"FROM stg_incoming inc " + 
+			"LEFT OUTER JOIN stg_order_item oi " + 
 			"  ON (oi.orderItemNo = inc.orderItemNo AND inc.useYN = 'Y') " + 
 			"INNER JOIN stg_order o " + 
 			"  ON (oi.orderNo = o.orderNo) " + 
-			"INNER JOIN stg_stock st " + 
-			"  ON (oi.itemCode = st.itemCode) " + 
+			"LEFT OUTER JOIN stg_stock st " + 
+			"  ON (oi.itemCode = st.itemCode AND st.useYN = 'Y') " + 
 			"WHERE oi.useYN = 'Y' " + 
 			
 	        "<if test='category1 == 1 and orderNo != null and orderNo != \"\"'> " +
@@ -89,4 +89,22 @@ public interface StockMapper {
 
 	@Update("UPDATE stg_stock SET qty = qty - #{no} WHERE itemCode = #{itemCode}")
 	public int updateQtyM(@Param("itemCode") int itemCode, @Param("no") int no);
+
+
+	// 1단계 : Stock 수정 전 입고 데이터 가져오기
+	@Select("SELECT `no` as incomeNo, qty FROM stg_incoming WHERE useYn = 'Y' AND `no` = #{incomeNo}")
+	public IncomeDTO findByItem(int incomeNo);
+	
+	// 2단계 : Stock 테이블에 해당 품목 여부 확인
+	@Select("SELECT * FROM stg_stock WHERE bizNo = #{bizNo} AND name = #{stockName}")
+	public StockDTO findByBizAndItem(IncomeDTO incomeDTO);
+
+	// 3-1단계 : 해당 폼목이 없으면 추가
+	@Insert("INSERT INTO stg_stock (bizNo, name, qty) VALUE (#{bizNo}, #{name}, #{qty})")
+	public int createStock(StockDTO stockDTO);
+
+	// 3-2단계 : 해당 폼목이 있으면 수정
+	@Update("UPDATE stg_stock SET qty = #{qty} WHERE itemCode = #{itemCode}")
+	public int updateStock(StockDTO stockDTO);
+	
 }

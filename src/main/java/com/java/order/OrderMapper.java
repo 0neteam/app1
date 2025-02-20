@@ -41,8 +41,8 @@ public interface OrderMapper {
     int insertOrderAndReturnOrderNo(OrderDTO order);  // orderNo를 OrderDTO 객체에 채우기
 
 
-    @Insert("INSERT INTO stg_order_item (orderNo, itemCode, qty) " +
-            "VALUES (#{orderNo}, #{itemCode}, #{qty})")
+    @Insert("INSERT INTO stg_order_item (orderNo, itemCode, itemName, qty) " +
+            "VALUES (#{orderNo}, #{itemCode}, #{itemName}, #{qty})")
     int insertOrderItem(OrderItemDTO orderItem);
 
     @Select("select bizNo, bizName from stg_client where useYn = 'Y' and bizType = '제조'")
@@ -53,5 +53,13 @@ public interface OrderMapper {
 
     @Select("select * from stg_order where orderNo = #{orderNo}")
     public OrderDTO findByOrderNo(int orderNo);
+
+    @Update("UPDATE stg_order SET orderStatus = #{orderStatus} WHERE orderNo = #{orderNo}")
+    public int orderEdit(OrderDTO order);
+
+    @Insert(" INSERT INTO stg_incoming (orderItemNo, qty, status) "
+           +" SELECT orderItemNo, 0 AS qty, '미입고' AS status "
+           +" FROM stg_order_item WHERE orderNo = #{orderNo} ")
+    public int orderSyncIncoming(int orderNo);
 
 }

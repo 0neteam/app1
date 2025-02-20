@@ -5,12 +5,14 @@ import com.java.biz.BizApiKeyDTO;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -25,11 +27,15 @@ public class OrderServiceImp implements OrderService {
 
     private final OrderDAO orderDAO;
 
+	@Value("${server.domain2}")
+    private String domain;
+
     // 발주 조회
     @Override
     public String orderInquiry(Model model) {
         List<OrderDTO> ex1s = orderDAO.orderInquiry();
         model.addAttribute("result", ex1s);
+        model.addAttribute("domain", domain);
         if(ex1s.size() > 0) {
             int bizNo = ex1s.get(0).getBizNo();
             BizApiKeyDTO bizApiKeyDTO = BizApiKeyDTO.builder().bizNo(bizNo).type("order").build();
@@ -91,7 +97,7 @@ public class OrderServiceImp implements OrderService {
         bizApiKeyDTO = orderDAO.findByBizApi(bizApiKeyDTO);
         if(bizApiKeyDTO != null) {
             try {
-
+                System.out.println(bizApiKeyDTO);
                 ResponseEntity<OrderApiDTO> response = RestClient.create().post()
                     .uri(bizApiKeyDTO.getUrl())
                     .header("Authorization", bizApiKeyDTO.getKey())
@@ -192,6 +198,19 @@ public class OrderServiceImp implements OrderService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public OrderResDTO orderEdit(Integer orderNo, Integer type) {
+        
+        String orderStatus = (type == 1) ? "발주확정" : "발주취소";
+        OrderDTO order = OrderDTO.builder().orderNo(orderNo).orderStatus(orderStatus).build();        
+        boolean status = (orderDAO.orderEdit(order) == 1) ? true : false;
+        if(type == 1) {
+            // 발주확정 시 입고쪽 데이터 생성
+            status = (orderDAO.orderSyncIncoming(orderNo) > 0) ? true : false;
+        }
+
+        return OrderResDTO.builder().status(status).build();
     }
 
 }

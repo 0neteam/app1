@@ -93,4 +93,10 @@ public class OrderContoller {
         return orderService.orderCreate(orderReqDTO);
     }
 
+    @ResponseBody
+    @PostMapping("/order/edit")
+    public OrderResDTO orderEdit(@RequestParam("orderNo") Integer orderNo, @RequestParam("type") Integer type) {
+        return orderService.orderEdit(orderNo, type);
+    }
+
 }

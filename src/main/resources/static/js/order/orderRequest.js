@@ -162,8 +162,9 @@ $( () => {
       let orderItems = [];
       $("#data-container tr").each((i, e) => {
         let itemCode = $(e).find("td").eq(0).text();
+        let itemName = $(e).find("td").eq(1).text();
         let qty = $(e).find("td").eq(2).find("input[name='qty']").val();
-        orderItems[orderItems.length] = {itemCode, qty};
+        orderItems[orderItems.length] = {itemCode, itemName, qty};
       });
       const params = {order, orderItems};
 

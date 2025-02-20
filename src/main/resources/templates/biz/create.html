@@ -23,7 +23,7 @@
             <div class="row form-group">
                 <div class="col-sm-9"></div>
                 <div class="col-sm-3">
-                    <button type="button" class="btn btn-light">사업자등록번호 검색</button>
+                    <button type="button" class="btn btn-light" id="searchBizNum">사업자등록번호 검색</button>
                 </div>
             </div>
             <div class="row form-group">
@@ -60,27 +60,31 @@
             <div class="row form-group">
                 <div class="col-sm-2">업태/종목</div>
                 <div class="col-sm-4">
-                    <input type="text" name="bizType" id="bizType" class="form-control">
+                    <select name="bizType" id="bizType" class="form-control">
+                        <option value="운수">운수</option>
+                        <option value="제조">제조</option>
+                        <option value="도소매">도소매</option>
+                    </select>
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col-sm-2">발주url</div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" name="orderUrl" id="orderUrl" required />
+                    <input type="text" class="form-control" name="orderUrl" id="orderUrl" />
                 </div>
                 <div class="col-sm-2">품목url</div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" name="productUrl" id="productUrl" required />
+                    <input type="text" class="form-control" name="productUrl" id="productUrl" />
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col-sm-2">발주key</div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" name="orderKey" id="orderKey" required />
+                    <input type="text" class="form-control" name="orderKey" id="orderKey" />
                 </div>
                 <div class="col-sm-2">품목key</div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" name="productKey" id="productKey" required />
+                    <input type="text" class="form-control" name="productKey" id="productKey" />
                 </div>
             </div>
             <div class="row form-group">
@@ -103,6 +107,18 @@
                 <div class="col-sm-2">이메일</div>
                 <div class="col-sm-10">
                     <input type="email" name="email" id="email" class="form-control" required />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-sm-2">비밀번호</div>
+                <div class="col-sm-10">
+                    <input type="password" name="pwd" id="pwd" class="form-control" required />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-sm-2">비밀번호 확인</div>
+                <div class="col-sm-10">
+                    <input type="password" name="password_confirm" id="password_confirm" class="form-control" required />
                 </div>
             </div>
             <div class="row form-group">

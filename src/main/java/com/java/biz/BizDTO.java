@@ -88,8 +88,8 @@ public class BizDTO {
     public static BizDTO setClientDTO(Map<String, String> paramMap) {
         BizDTO bizDTO = BizDTO.builder().build();
         List<BizApiKeyDTO> apiKeys = new ArrayList<BizApiKeyDTO>();
+        // String orderUrl = null, productUrl = null, orderKey = null, productKey = null;
         if(paramMap != null) {
-            String orderUrl = null, productUrl = null, orderKey = null, productKey = null;
             for(String key : paramMap.keySet()) {
                 // Client info
                 if("bizNum".equals(key)) {
@@ -140,11 +140,12 @@ public class BizDTO {
                 //     productKey = paramMap.get(key);
                 // }
             }
-
-            // apiKeys.add(BizApiKeyDTO.builder().bizNo(bizDTO.getBizNo()).type("order").url(orderUrl).key(orderKey).build());
-            // apiKeys.add(BizApiKeyDTO.builder().bizNo(bizDTO.getBizNo()).type("list").url(productUrl).key(productKey).build());
         }
-        //bizDTO.setApiKeys(apiKeys);
+        // if(orderUrl != null && productUrl != null) {
+        //     apiKeys.add(BizApiKeyDTO.builder().bizNo(bizDTO.getBizNo()).type("order").url(orderUrl).key(orderKey).build());
+        //     apiKeys.add(BizApiKeyDTO.builder().bizNo(bizDTO.getBizNo()).type("list").url(productUrl).key(productKey).build());
+        //     bizDTO.setApiKeys(apiKeys);
+        // }
         return bizDTO;
     }
 }

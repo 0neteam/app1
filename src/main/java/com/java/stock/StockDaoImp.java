@@ -97,4 +97,17 @@ public class StockDaoImp implements StockDao {
 		return stockMapper.deleteStock(no);
 	}
 
+	public IncomeDTO findByItem(int incomeNo) {
+		return stockMapper.findByItem(incomeNo);
+	}
+	public StockDTO findByBizAndItem(IncomeDTO incomeDTO) {
+		return stockMapper.findByBizAndItem(incomeDTO);
+	}
+	public int createStock(StockDTO stockDTO) {
+		return stockMapper.createStock(stockDTO);
+	}
+	public int updateStock(StockDTO stockDTO) {
+		return stockMapper.updateStock(stockDTO);
+	}
+
 }

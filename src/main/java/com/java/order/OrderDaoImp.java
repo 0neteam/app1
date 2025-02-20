@@ -47,4 +47,12 @@ public class OrderDaoImp implements OrderDAO{
         return orderMapper.findByOrderNo(orderNo);
     }
 
+    public int orderEdit(OrderDTO order) {
+        return orderMapper.orderEdit(order);
+    }
+
+    public int orderSyncIncoming(int orderNo) {
+        return orderMapper.orderSyncIncoming(orderNo);
+    }
+
 }

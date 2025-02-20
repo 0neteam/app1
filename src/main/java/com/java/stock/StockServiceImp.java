@@ -30,11 +30,24 @@ public class StockServiceImp implements StockService {
 		if("edit".equals(stockReqDTO.getState())) {
 			for(IncomeDTO incomeDTO : stockReqDTO.getInComes()) {
 				if(incomeDTO.getIncomeNo() > 0) {
-					if(stockDao.editIncome(incomeDTO) == 1) {
+					if(stockDao.editIncome(incomeDTO) > 0) {
 						status = true;
 					}
-				} else {
-					if(stockDao.createIncome(incomeDTO) == 1) {
+				}
+			}
+			for(IncomeDTO incomeDTO : stockReqDTO.getInComes()) {
+				if(incomeDTO.getIncomeNo() > 0) {
+					IncomeDTO incomeDTO2 = stockDao.findByItem(incomeDTO.getIncomeNo());
+					if(incomeDTO2 != null) {
+						StockDTO stockDTO = stockDao.findByBizAndItem(incomeDTO);
+						if(stockDTO == null) {
+							stockDTO = StockDTO.builder().bizNo(incomeDTO.getBizNo()).name(incomeDTO.getStockName()).qty(incomeDTO.getIncomeQty()).build();
+							stockDao.createStock(stockDTO);
+						} else {
+							int incomeQty = incomeDTO.getIncomeQty() - incomeDTO2.getIncomeQty();
+							stockDTO = StockDTO.builder().itemCode(stockDTO.getItemCode()).qty(incomeQty).build();
+							stockDao.updateStock(stockDTO);
+						}
 						status = true;
 					}
 				}

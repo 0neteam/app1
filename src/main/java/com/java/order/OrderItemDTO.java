@@ -16,6 +16,7 @@ public class OrderItemDTO {
     private int orderItemNo;
     private int orderNo;
     private int itemCode;
+    private String itemName;
     private int qty;
 
 }

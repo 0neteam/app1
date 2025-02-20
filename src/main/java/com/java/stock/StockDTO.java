@@ -24,7 +24,8 @@ public class StockDTO {
     private int category;			// 카테고리 (검색용)
     private String search;			// 서치
     
-    private String bizNo;
+    // private String bizNo;
+    private int bizNo;
 	
 	
 	public static StockDTO setStock(Map<String, String> paramMap) {

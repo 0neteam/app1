@@ -23,11 +23,12 @@ $(document).ready(function() {
                     var incomeNo = row.querySelector('input[name="incomeNo"]').value;
                     var orderNo = row.querySelector('td:nth-child(2)').innerText;
                     var itemCode = row.querySelector('td:nth-child(3)').innerText;
-
+                    var stockName = row.querySelector('td:nth-child(4)').innerText;
+                    var bizNo = $(row.querySelector('td:nth-child(9)')).find("button").attr("data-bizNo");
                     var incomeQty = $("input[name='incomeQty']").eq(i).val();
                     var status = row.querySelector('select[name="status"]').value;
                     
-                    var param = {incomeNo, orderNo, itemCode,  incomeQty , status}
+                    var param = {incomeNo, orderNo, itemCode, stockName, bizNo, incomeQty, status}
                     inComes[inComes.length] = param
                     console.log(param);
                 }

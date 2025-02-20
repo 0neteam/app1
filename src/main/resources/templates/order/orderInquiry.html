@@ -64,19 +64,17 @@
                             <div th:text="${row.orderReqDate}"></div> <!-- 발주요청일 -->
                         </div>
                         <div class="col border p-3">
-                            <a th:href="@{http://localhost:8002/quoChk/{orderNo}/{key}(orderNo=${row.orderNo},key=${key})}" target="_blank" class="btn btn-primary">견적서</a>
-                            <!-- 견적서 모달 버튼 -->
-                            <!-- <button type="button" class="btn btn-primary modal-button" data-bs-toggle="modal" data-bs-target="#modalViewEstimate">
-                                견적서
-                            </button> -->
+                            <a th:href="@{{domain}/quoChk/{orderNo}/{key}(orderNo=${row.orderNo},key=${key},domain=${domain})}" target="_blank" class="btn btn-primary w-100 m-1">견적서</a>
+                            
+                            <th:block th:if="${row.orderStatus == '발주대기'}">
+                                <button type="button" class="btn btn-primary w-100 m-1 order_click" th:data-orderNo="${row.orderNo}" data-type="1">확정</button>
+                                <button type="button" class="btn btn-primary w-100 m-1 order_click" th:data-orderNo="${row.orderNo}" data-type="2">취소</button>
+                            </th:block>
+                            
                         </div>
                     </div>
                 </th:block>
             </div>
-
-
-
-
 
     <!-- 견적서 모달 -->
     <div class="modal fade" id="modalViewEstimate" tabindex="-1" aria-labelledby="modalViewEstimateLabel" aria-hidden="true">
@@ -135,8 +133,33 @@
         </div>
     </div>
 
-
     <script>
+        $( () => {
+            $(".order_click").on("click", (e) => {
+                var orderNo = $(e.target).attr("data-orderNo");
+                var type = $(e.target).attr("data-type");
+                var _csrf = $("meta[name='_csrf']").attr("content");
+                var params = {_csrf, orderNo, type};
+                console.log(params);
+
+                $.ajax({
+                    url: '/order/edit',
+                    method: 'POST',
+                    data: params
+                }).done(res => {
+                    if (res.status) {
+                        alert("발주 수정이 완료 하였습니다.");
+                        window.location.reload();
+                    } else {
+                        alert("발주 수정 중 오류 발생 하였습니다.");
+                    }
+                }).fail(error => {
+                    console.log(error);
+                });
+
+            });
+        } );
+
         document.addEventListener('DOMContentLoaded', function() {
             const modalButton = document.querySelectorAll('.modal-button');  // 여러 개의 버튼이 있을 수 있으므로 querySelectorAll로 수정
             modalButton.forEach(button => {

@@ -19,4 +19,7 @@ public interface OrderDAO {
     public BizApiKeyDTO findByBizApi(BizApiKeyDTO bizApiKeyDTO);
     public OrderDTO findByOrderNo(int orderNo);
 
+    public int orderEdit(OrderDTO order);
+    public int orderSyncIncoming(int orderNo);
+
 }
