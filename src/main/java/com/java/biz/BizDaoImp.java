@@ -62,6 +62,7 @@ public class BizDaoImp implements BizDao {
                 bizDTO.setApiKeys(apiKeys);
             }
             for(BizApiKeyDTO bizApiKeyDTO : apiKeys) {
+                bizApiKeyDTO.setBizNo(bizDTO.getBizNo());
                 state += bizMapper.createApi(bizApiKeyDTO);
             }
             if(state == 3) return true;

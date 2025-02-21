@@ -79,9 +79,9 @@ $( () => {
       addItemEvent(arr);
     });
 
-    // $("#bizNo").on("change", (e) => {
-    //   console.log(e.target.value);
-    // });
+    $("#backBtn").on("click", (e) => {
+      $("#modalViewProduct").modal('hide');
+    });
 
     $("#viewProduct").on("click", ()=> {
       let bizNo = $("#bizNo").val();

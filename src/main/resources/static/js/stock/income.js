@@ -118,16 +118,16 @@ $(document).ready(function() {
     var page = 1;         // 현재 페이지 번호
 
     // 무한 스크롤 구현
-    $(window).on('scroll', function() {
-        // 페이지 끝에 가까워지면
-        if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
-            if (!loading) {
-                loading = true;
-                page++;  // 페이지 번호 증가
-                loadData(page);
-            }
-        }
-    });
+    // $(window).on('scroll', function() {
+    //     // 페이지 끝에 가까워지면
+    //     if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
+    //         if (!loading) {
+    //             loading = true;
+    //             page++;  // 페이지 번호 증가
+    //             loadData(page);
+    //         }
+    //     }
+    // });
 
     // 데이터 불러오기
     function loadData(page) {

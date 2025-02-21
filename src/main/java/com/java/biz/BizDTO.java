@@ -88,7 +88,7 @@ public class BizDTO {
     public static BizDTO setClientDTO(Map<String, String> paramMap) {
         BizDTO bizDTO = BizDTO.builder().build();
         List<BizApiKeyDTO> apiKeys = new ArrayList<BizApiKeyDTO>();
-        // String orderUrl = null, productUrl = null, orderKey = null, productKey = null;
+        String orderUrl = null, productUrl = null, orderKey = null, productKey = null;
         if(paramMap != null) {
             for(String key : paramMap.keySet()) {
                 // Client info
@@ -127,25 +127,25 @@ public class BizDTO {
                 }
 
                 // API & KEY
-                // if("orderUrl".equals(key)) {
-                //     orderUrl = paramMap.get(key);
-                // }
-                // if("productUrl".equals(key)) {
-                //     productUrl = paramMap.get(key);
-                // }
-                // if("orderKey".equals(key)) {
-                //     orderKey = paramMap.get(key);
-                // }
-                // if("productKey".equals(key)) {
-                //     productKey = paramMap.get(key);
-                // }
+                if("orderUrl".equals(key)) {
+                    orderUrl = paramMap.get(key);
+                }
+                if("productUrl".equals(key)) {
+                    productUrl = paramMap.get(key);
+                }
+                if("orderKey".equals(key)) {
+                    orderKey = paramMap.get(key);
+                }
+                if("productKey".equals(key)) {
+                    productKey = paramMap.get(key);
+                }
             }
         }
-        // if(orderUrl != null && productUrl != null) {
-        //     apiKeys.add(BizApiKeyDTO.builder().bizNo(bizDTO.getBizNo()).type("order").url(orderUrl).key(orderKey).build());
-        //     apiKeys.add(BizApiKeyDTO.builder().bizNo(bizDTO.getBizNo()).type("list").url(productUrl).key(productKey).build());
-        //     bizDTO.setApiKeys(apiKeys);
-        // }
+        if(orderUrl != null && productUrl != null) {
+            apiKeys.add(BizApiKeyDTO.builder().bizNo(bizDTO.getBizNo()).type("order").url(orderUrl).key(orderKey).build());
+            apiKeys.add(BizApiKeyDTO.builder().bizNo(bizDTO.getBizNo()).type("list").url(productUrl).key(productKey).build());
+            bizDTO.setApiKeys(apiKeys);
+        }
         return bizDTO;
     }
 }

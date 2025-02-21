@@ -75,6 +75,7 @@ public class BizServiceImp implements BizService {
 		if(bizDTO != null) {
 			if(bizDao.create(bizDTO)) {
 				// 이메일 발송
+				/*
 				String body = "";
 				String key = "요청 URL 목록 및 거래처 API-KEY\n";
 				for(BizApiKeyDTO bizApiKeyDTO : bizDTO.getApiKeys()) {
@@ -94,7 +95,9 @@ public class BizServiceImp implements BizService {
 					.emailBody(body)
 					.emailHtmlEnable(false)
 					.build();
-				if(uniFunc.sendMail(mailDTO)) return BizResDTO.builder().status(true).build();
+				if(uniFunc.sendMail(mailDTO)) 
+				 */
+				return BizResDTO.builder().status(true).build();
 			}
 		}
 			
