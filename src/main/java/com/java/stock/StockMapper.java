@@ -59,7 +59,7 @@ public interface StockMapper {
 			+" ( fn_order_item_no(#{orderNo}, #{itemCode}) , #{incomeQty}, #{status})")
 	public int createIncome(IncomeDTO incomeDTO);
 
-	@Update("UPDATE stg_incoming SET qty = #{incomeQty}, status = #{status} WHERE no = ${incomeNo}")
+	@Update("UPDATE stg_incoming SET qty = #{incomeQty}, status = #{status}, incomeDate = IFNULL(incomeDate, NOW()) WHERE no = ${incomeNo}")
 	public int editIncome(IncomeDTO incomeDTO);
 	
 	@Update("UPDATE stg_incoming SET useYN = 'N' WHERE no = ${incomeNo}")

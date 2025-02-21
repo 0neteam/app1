@@ -43,25 +43,20 @@ public class StockDaoImp implements StockDao {
 
     @Override
     public int editIncome(IncomeDTO incomeDTO) {
-    	
     	Integer stqty = stockMapper.searchQty(incomeDTO.getIncomeNo());
-
         if (stqty != null) {
-        	
-        	int edit = stockMapper.editIncome(incomeDTO);
-        	
-        	if (edit > 0) {
-        	    int incqty = stockMapper.searchQty(incomeDTO.getIncomeNo());
-        	    int itemCode = incomeDTO.getItemCode();
-        	    int diff = incqty - stqty;
+        	return stockMapper.editIncome(incomeDTO);
+        	// if (edit > 0) {
+        	//     int incqty = stockMapper.searchQty(incomeDTO.getIncomeNo());
+        	//     int itemCode = incomeDTO.getItemCode();
+        	//     int diff = incqty - stqty;
         	    
-        	    return stockMapper.updateQtyP(itemCode, diff);
-        	} else {
-        		return 0;
-        	}
-        } else {
-        	return 0;
+        	//     return stockMapper.updateQtyP(itemCode, diff);
+        	// } else {
+        	// 	return 0;
+        	// }
         }
+        return 0;
     }
     
     @Override
